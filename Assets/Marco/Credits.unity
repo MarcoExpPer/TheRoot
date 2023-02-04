@@ -367,9 +367,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\xC1lvaro Sardina\nAlex Ferrin Alcivar\nDiego Gimenez Romanillos\nJos\xE9
-    P\xE9rez\nLuis Fernandez Freide\nMarco Exp\xF3sito P\xE9rez\nMiguel \xC1ngel
-    Torrijos Gonz\xE1lez"
+  m_text: "\xC1lvaro Sardina\nAlex Ferrin Alcivar\nDiego Gimenez Romanillos\nLuis
+    Fernandez Freide\nMarco Exp\xF3sito P\xE9rez\nMiguel \xC1ngel Torrijos Gonz\xE1lez\nPepe
+    P\xE9rez"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
