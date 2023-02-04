@@ -267,7 +267,7 @@ public class CmdCreator : MonoBehaviour
                 fileName2 = GenerateName();
                 fileColor2 = GenerateColor();
                 fileSize2 = GenerateSize();
-                fileSudo2 = decideSudo();
+                fileSudo2 = fileSudo;
                 if (!correctName)
                 {
                     return new Command(ECommand.REPLACE,
