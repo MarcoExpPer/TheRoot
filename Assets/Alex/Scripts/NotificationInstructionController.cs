@@ -28,7 +28,8 @@ public class NotificationInstructionController : MonoBehaviour
         _texto.text = "" + textString + "<b>File:</b> " + notif.fileName + "\n\n";
         if (notif.op == ECommand.REPLACE)
         {
-            _texto.text = _texto.text + "<b>File to Replace:</b> " + notif.secondaryFileName + "\n\n";
+            _texto.text = "" + textString + "<b>File to be Replaced:</b> " + notif.fileName + "\n\n";
+            _texto.text = _texto.text + "<b>File to Enter:</b> " + notif.secondaryFileName + "\n\n";
         }
         switch (notif.op)
         {

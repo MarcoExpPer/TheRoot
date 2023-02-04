@@ -37,7 +37,7 @@ public class CmdCreator : MonoBehaviour
     [SerializeField]
     GameManager gameManager;
 
-    int commandCount = 0;
+    public int commandCount = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -166,7 +166,17 @@ public class CmdCreator : MonoBehaviour
             int fileSize = 1;
             bool fileSudo = false;
 
+            string fileName2 = "";
+            Color fileColor2 = Color.red;
+            int fileSize2 = 1;
+            bool fileSudo2 = false;
+
+
+
             numCommandToNextLevel--;
+
+            bool correctName = decideCorrectness();
+            bool correctOp = decideCorrectness();
 
             if (commandType == ECommand.ADD)
             {
@@ -174,6 +184,16 @@ public class CmdCreator : MonoBehaviour
                 fileColor = GenerateColor();
                 fileSize = GenerateSize();
                 fileSudo = decideSudo();
+                if(!correctName)
+                {
+                    return new Command(ECommand.ADD, new cmdNotification(GenerateName(), ECommand.ADD),
+                    new FileData(fileName, fileColor, fileSize), fileSudo);
+                }
+                if (!correctOp)
+                {
+                    return new Command(ECommand.ADD, new cmdNotification(fileName, ECommand.DELETE),
+                    new FileData(fileName, fileColor, fileSize), fileSudo);
+                }
                 return new Command(ECommand.ADD, new cmdNotification(fileName, ECommand.ADD),
                 new FileData(fileName, fileColor, fileSize), fileSudo);
             }
@@ -204,9 +224,18 @@ public class CmdCreator : MonoBehaviour
                     fileSize = GenerateSize();
                     fileSudo = decideSudo();
                 }
-
-                return new Command(ECommand.DELETE, new cmdNotification(fileName, ECommand.DELETE),
+                if (!correctName)
+                {
+                    return new Command(ECommand.DELETE, new cmdNotification(GenerateName(), ECommand.DELETE),
                     new FileData(fileName, fileColor, fileSize), fileSudo);
+                }
+                if (!correctOp)
+                {
+                    return new Command(ECommand.DELETE, new cmdNotification(fileName, ECommand.ADD),
+                    new FileData(fileName, fileColor, fileSize), fileSudo);
+                }
+                return new Command(ECommand.DELETE, new cmdNotification(fileName, ECommand.DELETE),
+                new FileData(fileName, fileColor, fileSize), fileSudo);
             }
             else if (commandType == ECommand.REPLACE)
             {
@@ -218,7 +247,6 @@ public class CmdCreator : MonoBehaviour
                         p.Add(i);
                     }
                 }
-
                 //si no hay ningun archivo pues se genera un nombre aleatorio y listo
                 if (p.Count != 0)
                 {
@@ -226,7 +254,7 @@ public class CmdCreator : MonoBehaviour
                     fileName = rootSizeMan.slots[a].slotData.fileData.nombre;
                     fileColor = rootSizeMan.slots[a].slotData.fileData.origen;
                     fileSize = rootSizeMan.slots[a].slotData.fileData.size;
-                    fileSudo = decideSudo();
+                    //fileSudo = decideSudo();
                 }
                 else
                 {
@@ -236,9 +264,28 @@ public class CmdCreator : MonoBehaviour
                     fileSudo = decideSudo();
                 }
 
+                fileName2 = GenerateName();
+                fileColor2 = GenerateColor();
+                fileSize2 = GenerateSize();
+                fileSudo2 = decideSudo();
+                if (!correctName)
+                {
+                    return new Command(ECommand.REPLACE,
+                    new cmdNotification(fileName, GenerateName(), ECommand.REPLACE),
+                    new FileData(fileName, fileColor, fileSize),
+                    new FileData(fileName2, fileColor2, fileSize2), fileSudo2);
+                }
+                if (!correctOp)
+                {
+                    return new Command(ECommand.REPLACE,
+                    new cmdNotification(fileName, fileName2, ECommand.COPY),
+                    new FileData(fileName, fileColor, fileSize),
+                    new FileData(fileName2, fileColor2, fileSize2), fileSudo2);
+                }
                 return new Command(ECommand.REPLACE, 
-                    new cmdNotification(fileName, ECommand.REPLACE),
-                    new FileData(fileName, fileColor, fileSize), fileSudo);
+                new cmdNotification(fileName,fileName2, ECommand.REPLACE),
+                new FileData(fileName, fileColor, fileSize),
+                new FileData(fileName2, fileColor2, fileSize2), fileSudo2);
             }
             else if (commandType == ECommand.COPY)
             {
@@ -267,7 +314,18 @@ public class CmdCreator : MonoBehaviour
                     fileSudo = decideSudo();
                 }
 
-
+                if (!correctName)
+                {
+                    return new Command(ECommand.COPY, new cmdNotification(GenerateName(), ECommand.COPY),
+                    new FileData(fileName, fileColor, fileSize),
+                    new FileData(fileName + "Copy", fileColor, fileSize), fileSudo);
+                }
+                if (!correctOp)
+                {
+                    return new Command(ECommand.COPY, new cmdNotification(fileName, ECommand.REPLACE),
+                    new FileData(fileName, fileColor, fileSize),
+                    new FileData(fileName + "Copy", fileColor, fileSize), fileSudo);
+                }
                 return new Command(ECommand.COPY, new cmdNotification(fileName, ECommand.COPY),
                     new FileData(fileName, fileColor, fileSize),
                     new FileData(fileName + "Copy", fileColor, fileSize), fileSudo);
@@ -394,6 +452,19 @@ public class CmdCreator : MonoBehaviour
     {
         //20% de no ser sudo
         if(Random.Range(1, 5) == 1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private bool decideCorrectness()
+    {
+        //10% de que no coincidan
+        if (Random.Range(1, 10) == 2)
         {
             return false;
         }
