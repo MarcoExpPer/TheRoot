@@ -24,7 +24,8 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
 
     public void OnDrag(PointerEventData EventData) 
     {
-        rt.anchoredPosition += EventData.delta / canvas.scaleFactor;
+        rt.anchoredPosition += EventData.delta;
+        transform.SetAsLastSibling();
     }
 
     public void OnEndDrag(PointerEventData EventData) 
