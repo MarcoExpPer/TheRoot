@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
         if(newLevel > 1)
         {
             lookForSudo = true;
-            OurEvents newEvent = eventMan.addNewEvents();
+            //OurEvents newEvent = eventMan.addNewEvents();
 
             
         }
