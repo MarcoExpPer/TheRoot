@@ -110,12 +110,12 @@ public class CmdCreator : MonoBehaviour
                 return new Command(ECommand.ADD, new cmdNotification("Archivo2", ECommand.ADD), 
                     new FileData("Archivo2", Color.black, 3), false);
             case 3:
-                return new Command(ECommand.DELETE, new cmdNotification("Archivo1", ECommand.ADD), 
+                return new Command(ECommand.DELETE, new cmdNotification("Archivo1", ECommand.DELETE), 
                     new FileData("Archivo1", Color.black, 1), false);
             default:
                 gameManager.level = 2;
                 commandCount = 0;
-                return new Command(ECommand.REPLACE, new cmdNotification("Archivo1 Copy", "Archivo3", ECommand.ADD), 
+                return new Command(ECommand.REPLACE, new cmdNotification("Archivo1 Copy", "Archivo3", ECommand.REPLACE), 
                     new FileData("Archivo1 Copy", Color.black, 1), 
                     new FileData("Archivo3", Color.black, 2), false);
 

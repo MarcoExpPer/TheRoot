@@ -11,10 +11,10 @@ public class GameManager : MonoBehaviour
     bool isGameRunning = true;
 
     [SerializeField]
-    TextMeshPro textTimer;
+    TextMeshProUGUI textTimer;
 
     [SerializeField]
-    TextMeshPro textPoints;
+    TextMeshProUGUI textPoints;
 
     [SerializeField]
     RootSizeManager rootSizeManager;
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
         if (isGameRunning)
         {
             gameTime += Time.deltaTime;
-            increasePoints(level * Time.deltaTime);
+            increasePoints(level/2 * Time.deltaTime);
         }
     }
 

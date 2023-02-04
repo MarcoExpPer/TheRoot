@@ -86,15 +86,12 @@ public class CmdStackController : MonoBehaviour
 
     void onQueueChanged(int index, EQueueChangedAction action, Command cmd)
     {
-        Debug.Log("Cambios");
         if (action == EQueueChangedAction.DEL_CMD)
         {
-            Debug.Log("Something removed");
             updateAllText();
         }
         else
         {
-            Debug.Log("Something added");
             index = cmdQueue.queueMaxSize - index - 1;
             texts[index].text = CmdQueue.printCommandInStack(cmd);
         }
