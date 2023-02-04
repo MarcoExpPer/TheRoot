@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class currentActiveCommandBtn : MonoBehaviour
 {
@@ -10,10 +11,25 @@ public class currentActiveCommandBtn : MonoBehaviour
 
     [SerializeField]
     TextMeshProUGUI text;
+
+    [SerializeField]
+    Button _fileButton;
+
+    [SerializeField]
+    Image _commandImage;
+
+    [SerializeField]
+    GameObject _sudoImage;
+
+    [SerializeField]
+    Sprite[] _fileSpritesToUse;
+
+    [SerializeField]
+    Sprite[] _commandSpritesToUse;
     // Start is called before the first frame update
     void Start()
     {
-        
+        _sudoImage.SetActive(false);
     }
 
     // Update is called once per frame
@@ -24,7 +40,12 @@ public class currentActiveCommandBtn : MonoBehaviour
     public void updateCommand(Command cmd)
     {
         command = cmd;
-        text.text = cmd.commandType + " " + cmd.file.nombre;
+        _fileButton.image.sprite = _fileSpritesToUse[0];
+
+        _commandImage.sprite = _commandSpritesToUse[(int)(cmd.commandType)];
+        _commandImage.SetNativeSize();
+
+        //text.text = cmd.commandType + " " + cmd.file.nombre;
     }
 
 }

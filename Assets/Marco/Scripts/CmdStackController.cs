@@ -9,6 +9,24 @@ public class CmdStackController : MonoBehaviour
     [SerializeField]
     CmdQueue cmdQueue;
 
+    [SerializeField]
+    Image[] _colorOperations;
+
+    [SerializeField]
+    Image[] _operationImages;
+
+    [SerializeField]
+    Sprite[] _spritesToUse;
+
+    [SerializeField]
+    Color[] _operationColors;
+
+    [SerializeField]
+    Image _stackStatusImage;
+
+    [SerializeField]
+    Sprite[] _stackStatusImageFiles;
+
     RectTransform rt;
 
     int fontSize = 5;
@@ -16,53 +34,13 @@ public class CmdStackController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rt = gameObject.GetComponent<RectTransform>();
-        texts = new List<TextMeshPro>();
-
-        if (rt != null)
+        foreach (Image img in _operationImages)
         {
-            int nRows = cmdQueue.queueMaxSize;
-            float heightPerText = rt.rect.height / nRows;
-
-            for (int i = 0; i < cmdQueue.queueMaxSize; i++)
-            {
-                //Create the text and add it to the canvas
-                GameObject newGO = new GameObject("text " + i);
-                newGO.transform.SetParent(transform);
-
-                TextMeshPro myText = newGO.AddComponent<TextMeshPro>();
-                myText.text = " (empty) ";
-                myText.fontSize = fontSize;
-
-                RectTransform textRt = myText.GetComponent<RectTransform>();
-
-                //Set the new text position and size
-                textRt.sizeDelta = new Vector2(100, heightPerText);
-
-                textRt.anchorMin = new Vector2(0, 1);
-                textRt.anchorMax = new Vector2(0, 1);
-                textRt.pivot = new Vector2(0, 1);
-
-                textRt.anchoredPosition = new Vector2(6, -heightPerText * i);
-
-
-                ContentSizeFitter fitter = newGO.AddComponent<ContentSizeFitter>();
-                fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-                fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
-
-
-                texts.Add(myText);
-            }
+            img.gameObject.SetActive(false);
         }
 
-        if (cmdQueue == null)
-        {
-            Debug.Log("Cola vacia");
-        }
-        else
-        {
-            cmdQueue.OnQueueChanged += onQueueChanged;
-        }
+        cmdQueue.OnQueueChanged += onQueueChanged;
+        _stackStatusImage.sprite = _stackStatusImageFiles[0];
     }
 
 
@@ -75,11 +53,14 @@ public class CmdStackController : MonoBehaviour
 
             if (cmd == null)
             {
-                texts[index].text = " (empty) ";
+                _operationImages[index].gameObject.SetActive(false);
+                _colorOperations[index].color = _operationColors[4];
             }
             else
             {
-                texts[index].text = CmdQueue.printCommandInStack(cmd);
+                _colorOperations[index].color = _operationColors[(int)cmd.commandType];
+                _operationImages[index].sprite = _spritesToUse[(int)cmd.commandType];
+                _operationImages[index].gameObject.SetActive(true);
             }
         }
     }
@@ -93,7 +74,24 @@ public class CmdStackController : MonoBehaviour
         else
         {
             index = cmdQueue.queueMaxSize - index - 1;
-            texts[index].text = CmdQueue.printCommandInStack(cmd);
+
+            _colorOperations[index].color = _operationColors[(int)cmd.commandType];
+            _operationImages[index].sprite = _spritesToUse[(int)cmd.commandType];
+            _operationImages[index].gameObject.SetActive(true);
+
+            //texts[index].text = CmdQueue.printCommandInStack(cmd);
+        }
+        if(cmdQueue.currentQueueSize<=1)
+        {
+            _stackStatusImage.sprite = _stackStatusImageFiles[0];
+        }
+        else if (cmdQueue.currentQueueSize <= 3)
+        {
+            _stackStatusImage.sprite = _stackStatusImageFiles[1];
+        }
+        else
+        {
+            _stackStatusImage.sprite = _stackStatusImageFiles[2];
         }
     }
 

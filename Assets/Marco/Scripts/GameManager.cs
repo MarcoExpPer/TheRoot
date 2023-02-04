@@ -31,10 +31,10 @@ public class GameManager : MonoBehaviour
 
     public GameManager()
     {
-        levelToTimeBetweenCommands.Add(1, 20);
-        levelToTimeBetweenCommands.Add(2, 15);
-        levelToTimeBetweenCommands.Add(3, 15);
-        levelToTimeBetweenCommands.Add(4, 13);
+        levelToTimeBetweenCommands.Add(1, 10);
+        levelToTimeBetweenCommands.Add(2, 10);
+        levelToTimeBetweenCommands.Add(3, 10);
+        levelToTimeBetweenCommands.Add(4, 5);
     }
 
     

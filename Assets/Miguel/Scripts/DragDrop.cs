@@ -5,14 +5,14 @@ using UnityEngine.EventSystems;
 
 public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    private Canvas canvas;
-    private RectTransform rt;
+    public Canvas canvas;
+    public RectTransform rt;
 
 
     private void Start()
     {
         rt = gameObject.GetComponent<RectTransform>();
-        canvas = transform.parent.GetComponent<Canvas>();
+        //canvas = rt.parent.GetComponent<Canvas>();
 
     }
 
