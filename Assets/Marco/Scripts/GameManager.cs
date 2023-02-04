@@ -24,6 +24,10 @@ public class GameManager : MonoBehaviour
     MonitorScreenManager monitorScreenMan;
 
     [SerializeField]
+    eventManager eventMan;
+
+
+    [SerializeField]
     public Dictionary<int, float> levelToTimeBetweenCommands = new Dictionary<int, float>();
 
 
@@ -103,6 +107,9 @@ public class GameManager : MonoBehaviour
         if(newLevel > 1)
         {
             lookForSudo = true;
+            OurEvents newEvent = eventMan.addNewEvents();
+
+            
         }
     }
 }

@@ -151,3 +151,5 @@ MonoBehaviour:
   VirusSprite: {fileID: -1597817762, guid: 1cd3790a646452b40b2090ccaa97cd52, type: 3}
   BlockedSprite: {fileID: 243441557, guid: 1cd3790a646452b40b2090ccaa97cd52, type: 3}
   image: {fileID: 8997395848630809586}
+  fileInfo: {fileID: 0}
+  wr: {fileID: 0}

@@ -20,6 +20,8 @@ public class RootFileBtn : MonoBehaviour
     [SerializeField]
     public Image image;
 
+    [SerializeField]
+    public FileDataWindow fileInfo;
 
     // Start is called before the first frame update
     void Start()
@@ -62,7 +64,8 @@ public class RootFileBtn : MonoBehaviour
         }
         else
         {
-            Debug.Log(slotData.fileData.nombre);
+            fileInfo.gameObject.SetActive(!fileInfo.gameObject.activeSelf);
+            fileInfo.updateData(slotData.fileData, slotData.state);
         }
         
     }
