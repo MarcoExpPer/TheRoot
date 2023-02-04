@@ -15,11 +15,16 @@ public class GameManager : MonoBehaviour
     bool isGameRunning = true;
 
     public bool lookForSudo = false;
+    public bool virusCanHappen = false;
+
     [SerializeField]
     TextMeshProUGUI textTimer;
 
     [SerializeField]
     TextMeshProUGUI textPoints;
+
+    [SerializeField]
+    TextMeshProUGUI textLevel;
 
     [SerializeField]
     RootSizeManager rootSizeManager;
@@ -28,7 +33,7 @@ public class GameManager : MonoBehaviour
     MonitorScreenManager monitorScreenMan;
 
     [SerializeField]
-    eventManager eventMan;
+    public eventManager eventMan;
 
     [SerializeField]
     Image blackPanel;
@@ -50,6 +55,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        textLevel.text = "1";
         textTimer.text = "00:00";
         textPoints.text = "00 00";
 
@@ -115,13 +121,31 @@ public class GameManager : MonoBehaviour
 
     public void UpdateLevel(int newLevel)
     {
-        if(newLevel > 1)
+        textLevel.text = newLevel.ToString();
+        if (newLevel > 1)
         {
             lookForSudo = true;
-            //OurEvents newEvent = eventMan.addNewEvents();
-
-            
         }
+
+        if(newLevel > 2)
+        {
+            virusCanHappen = true;
+        }
+
+        if(newLevel == 2)
+        {
+            eventMan.addNewEvents();
+        }
+        if (newLevel == 3)
+        {
+            eventMan.addNewEvents();
+        }
+        if (newLevel == 4)
+        {
+            eventMan.addNewEvents();
+        }
+
+        level = newLevel;
     }
 
     IEnumerator blackScreenEffect()

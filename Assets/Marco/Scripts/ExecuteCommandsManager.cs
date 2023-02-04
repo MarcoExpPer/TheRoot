@@ -29,47 +29,361 @@ public class ExecuteCommandsManager : MonoBehaviour
 
     public void confirmCommand(bool execute)
     {
-        Debug.Log("Execute Command: " + execute + " " + cmdToExecute.commandType);
-        bool result = false;
+        Debug.Log("Execute Command: " + execute + " " + cmdToExecute.commandType + " " + cmdToExecute.isSudo);
+        bool correct = false;
 
-        if (gameMan.lookForSudo && !cmdToExecute.isSudo)
+        if (checkTam())
         {
-            if (execute)
+            if (cmdToExecute.commandType == cmdToExecute.notification.op &&
+                cmdToExecute.file.nombre == cmdToExecute.notification.fileName)
             {
-                cmdToExecute.file.size = 2;
-                cmdToExecute.file.nombre = "";
-                rootSizemanager.addFile(cmdToExecute.file, ESlotState.VIRUS);
+                if (checkEvents())
+                {
+                    if (!gameMan.lookForSudo)
+                    {
+                        if (checkOp(execute))
+                        {
+                            //Todo correcto
+                            correct = true;
+                        }
+                        else
+                        {
+                            if (execute)
+                            {
+                                addVirus(cmdToExecute.file);
+                            }
+                            else
+                            {
+                                //Todo correcto
+                                correct = true;
+                            }
+                        }
+
+                    }
+                    else if (!gameMan.virusCanHappen)
+                    {
+                        //Level 2
+
+                        if (cmdToExecute.isSudo)
+                        {
+                            if (checkOp(execute))
+                            {
+                                //Todo correcto
+                                correct = true;
+                            }
+                            else
+                            {
+                                if (execute)
+                                {
+                                    addVirus(cmdToExecute.file);
+                                }
+                                else
+                                {
+                                    //Todo correcto
+                                    correct = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (execute)
+                            {
+                                addVirus(cmdToExecute.file);
+                            }
+                            else
+                            {
+                                //Todo correcto
+                                correct = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //Level 3+
+                        if (cmdToExecute.isSudo)
+                        {
+                            if (checkOp(execute))
+                            {
+                                //Todo correcto
+                                correct = true;
+                            }
+                            else
+                            {
+                                if (execute)
+                                {
+                                    addVirus(cmdToExecute.file);
+                                }
+                                else
+                                {
+                                    //Todo correcto
+                                    correct = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            bool hasVirus = false;
+                            switch (cmdToExecute.commandType)
+                            {
+                                case ECommand.COPY:
+                                case ECommand.DELETE:
+                                    break;
+
+                                case ECommand.ADD:
+                                    hasVirus = cmdToExecute.file.isVirus;
+                                    break;
+                                case ECommand.REPLACE:
+                                    hasVirus = cmdToExecute.secondaryFile.isVirus;
+                                    break;
+                            }
+
+                            if (hasVirus)
+                            {
+                                if (execute)
+                                {
+                                    addVirus(cmdToExecute.file);
+                                }
+                                else
+                                {
+                                    //Todo correcto
+                                    correct = true;
+                                }
+                            }
+                            else
+                            {
+                                if (checkOp(execute))
+                                {
+                                    //Todo correcto
+                                    correct = true;
+                                }
+                                else
+                                {
+                                    if (execute)
+                                    {
+                                        addVirus(cmdToExecute.file);
+                                    }
+                                    else
+                                    {
+                                        //Todo correcto
+                                        correct = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (execute)
+                    {
+                        addVirus(cmdToExecute.file);
+                    }
+                    else
+                    {
+                        //Todo correcto
+                        correct = true;
+                    }
+                }
             }
             else
             {
-                result = true;
+                if (execute)
+                {
+                    addVirus(cmdToExecute.file);
+                }
+                else
+                {
+                    //Todo correcto
+                    correct = true;
+                }
             }
         }
-        
+        else
+        {
+            if (execute)
+            {
+                addBlocked(cmdToExecute.file);
+            }
+            else
+            {
+                //Todo correcto
+                correct = true;
+            }
+        }
+
+        Debug.Log("Es correcto: " + correct);
+        if (correct)
+        {
+            if (execute)
+            {
+                switch (cmdToExecute.commandType)
+                {
+                    case ECommand.COPY:
+                        rootSizemanager.addFile(cmdToExecute.secondaryFile, ESlotState.FILLED);
+                        break;
+                    case ECommand.DELETE:
+                        rootSizemanager.deleteFIle(cmdToExecute.file.nombre);
+                        break;
+
+                    case ECommand.ADD:
+                        rootSizemanager.addFile(cmdToExecute.file, ESlotState.FILLED);
+                        break;
+                    case ECommand.REPLACE:
+                        Debug.Log("Replace Command Execution");
+                        rootSizemanager.deleteFIle(cmdToExecute.file.nombre);
+                        rootSizemanager.addFile(cmdToExecute.secondaryFile, ESlotState.FILLED);
+                        break;
+                }
+            }
+
+            gameMan.increasePoints(gameMan.level * 15);
+        }
+
+        updateCommand(cmdCreator.getNextCommand());
+    }
+
+    public bool checkOp(bool execute)
+    {
+        if (cmdToExecute.commandType != ECommand.ADD)
+        {
+            return checkIfFileNameExists(cmdToExecute.file.nombre);
+        }
+
+        return true;
+    }
+    public void addBlocked(FileData file)
+    {
+        file.nombre = "";
+        file.size = 1;
+        rootSizemanager.addFile(file, ESlotState.BLOCKED);
+    }
+
+    public void addVirus(FileData file)
+    {
+        file.nombre = "";
+        file.size = 2;
+        rootSizemanager.addFile(file, ESlotState.VIRUS);
+    }
+
+    public bool checkTam()
+    {
         switch (cmdToExecute.commandType)
         {
             case ECommand.ADD:
-                result = CheckAddOperation(execute);
-                break;
+                return rootSizemanager.emptySlots >= cmdToExecute.file.size;
+
             case ECommand.COPY:
-                result = CheckCopyOperation(execute);
-                break;
+                return rootSizemanager.emptySlots >= cmdToExecute.file.size;
+
             case ECommand.DELETE:
-                result = CheckRemoveOperation(execute);
-                break;
+                return true;
+
             case ECommand.REPLACE:
-                result = checkReplaceCommand(execute);
-                break;
+                int emptySpace = rootSizemanager.emptySlots - cmdToExecute.secondaryFile.size;
+
+                for (int i = 0; i < rootSizemanager.slots.Count; i++)
+                {
+                    if (rootSizemanager.slots[i].slotData != null && rootSizemanager.slots[i].slotData.fileData != null &&
+                        rootSizemanager.slots[i].slotData.fileData.nombre == cmdToExecute.file.nombre)
+                    {
+                        emptySpace += 1;
+                    }
+                }
+
+                return emptySpace >= 0;
         }
 
-        Debug.Log("Command result " + result);
-        updateCommand(cmdCreator.getNextCommand());
+        return false;
+    }
 
-        if (result)
+    public bool genericTests(bool execute)
+    {
+        if (gameMan.lookForSudo) //Si estamos bsucando sudo, los no-sudo no deben pasar
         {
-            gameMan.increasePoints(gameMan.level * 15);
+            if (gameMan.virusCanHappen) //Si puede haber virus, los no-sudo sin virus pueden pasar
+            {
+                if (cmdToExecute.isSudo)    //Si el comando es sudo y se ejecuta, todo correcto
+                {
+                    if (execute)
+                        return true;
+                    else
+                    {
+                        cmdToExecute.file.nombre = "";
+                        cmdToExecute.file.size = 1;
+
+                        rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (cmdToExecute.file.isVirus)  //Si no es sudo y tiene virus, si se ejecuta es malo
+                    {
+                        if (execute)
+                        {
+                            cmdToExecute.file.nombre = "";
+                            cmdToExecute.file.size = 2;
+
+                            rootSizemanager.addFile(cmdToExecute.file, ESlotState.VIRUS);
+                            return false;
+                        }
+                        else
+                            return true;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+            else //El caso en el que no puede haber viruses, asi que los no-sudo 100% fuera
+            {
+                Debug.Log("No tiene virus");
+                if (cmdToExecute.isSudo)
+                {
+                    if (execute)
+                        return true;
+                    else
+                    {
+                        cmdToExecute.file.nombre = "";
+                        cmdToExecute.file.size = 1;
+
+                        rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
+                        return false;
+                    }
+
+                }
+                else
+                {
+                    if (execute)
+                    {
+                        cmdToExecute.file.nombre = "";
+                        cmdToExecute.file.size = 2;
+
+                        rootSizemanager.addFile(cmdToExecute.file, ESlotState.VIRUS);
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+        } //Si no estamos buscando por sudo, todo correcto
+        return true;
+    }
+
+    public bool checkEvents()
+    {
+        for (int i = 0; i < gameMan.eventMan.activeEvents.Count; i++)
+        {
+            if (!gameMan.eventMan.activeEvents[i].isValid(cmdToExecute.file))
+            {
+                return false;
+            }
         }
-        
+
+        return true;
     }
 
     public void Update()
@@ -92,9 +406,10 @@ public class ExecuteCommandsManager : MonoBehaviour
 
     public bool CheckAddOperation(bool execute)
     {
-        if(cmdToExecute.file.nombre == cmdToExecute.notification.fileName)
+
+        if (cmdToExecute.file.nombre == cmdToExecute.notification.fileName)
         {
-            if(ECommand.ADD == cmdToExecute.notification.op)
+            if (ECommand.ADD == cmdToExecute.notification.op)
             {
                 //Si es un comando correcto y el usuario decide ejecutarlo
                 if (execute)
@@ -106,6 +421,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                 else
                 {
                     cmdToExecute.file.nombre = "";
+                    cmdToExecute.file.size = 1;
                     rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                     return false;
                 }
@@ -144,7 +460,7 @@ public class ExecuteCommandsManager : MonoBehaviour
             }
         }
 
-        
+
     }
 
     public bool CheckCopyOperation(bool execute)
@@ -158,7 +474,8 @@ public class ExecuteCommandsManager : MonoBehaviour
 
                 if (exists)
                 {
-                    if (execute) {
+                    if (execute)
+                    {
                         Debug.Log("El archivo que se quiere copiar existe y el usuario quiere ejecutarlo");
                         rootSizemanager.addFile(cmdToExecute.secondaryFile, ESlotState.FILLED);
                         return true;
@@ -167,6 +484,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                     {
                         Debug.Log("El archivo que se quiere copiar existe y el usuario NO quiere ejecutarlo");
                         cmdToExecute.file.nombre = "";
+                        cmdToExecute.file.size = 1;
                         rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                         return false;
                     }
@@ -202,7 +520,8 @@ public class ExecuteCommandsManager : MonoBehaviour
                 return true;
             }
         }
-        else{
+        else
+        {
             if (execute)
             {
                 Debug.Log("El archivo que se quiere copiar no concuerda en el nombre y el usuario quiere ejecutarlo");
@@ -239,6 +558,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                     {
                         Debug.Log("El archivo que se quiere eliminar existe y el usuario NO quiere ejecutarlo");
                         cmdToExecute.file.nombre = "";
+                        cmdToExecute.file.size = 1;
                         rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                         return false;
                     }
@@ -250,6 +570,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                     {
                         Debug.Log("El archivo que se quiere eliminar no existe en la root y el usuario quiere ejecutarlo");
                         cmdToExecute.file.nombre = "";
+                        cmdToExecute.file.size = 1;
                         rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                         return false;
                     }
@@ -263,6 +584,7 @@ public class ExecuteCommandsManager : MonoBehaviour
             {
                 Debug.Log("El archivo que se quiere eliminar no concuerda en la operacion y el usuario quiere ejecutarlo");
                 cmdToExecute.file.nombre = "";
+                cmdToExecute.file.size = 1;
                 rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                 return false;
             }
@@ -276,6 +598,7 @@ public class ExecuteCommandsManager : MonoBehaviour
             if (execute)
             {
                 cmdToExecute.file.nombre = "";
+                cmdToExecute.file.size = 1;
                 rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                 return false;
             }
@@ -290,12 +613,14 @@ public class ExecuteCommandsManager : MonoBehaviour
     {
         if (cmdToExecute.file.nombre == cmdToExecute.notification.fileName)
         {
+            Debug.Log("Nombre = a lo otro");
             if (ECommand.REPLACE == cmdToExecute.notification.op)
             {
-                Debug.Log(cmdToExecute.file);
+                Debug.Log("Comando igual a la notificacion");
 
                 //Comprobar si existe el archivo que se pretende replacear
                 bool exists = checkIfFileNameExists(cmdToExecute.file.nombre);
+                Debug.Log("El archivo existe? " + exists);
 
                 if (exists)
                 {
@@ -310,6 +635,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                     {
                         Debug.Log("El archivo que se quiere replacear existe y el usuario NO quiere ejecutarlo");
                         cmdToExecute.file.nombre = "";
+                        cmdToExecute.file.size = 1;
                         rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                         return false;
                     }
@@ -321,6 +647,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                     {
                         Debug.Log("El archivo que se quiere replacear no existe en la root y el usuario quiere ejecutarlo");
                         cmdToExecute.file.nombre = "";
+                        cmdToExecute.file.size = 1;
                         rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                         return false;
                     }
@@ -330,16 +657,20 @@ public class ExecuteCommandsManager : MonoBehaviour
                     }
                 }
             }
-            if (execute)
-            {
-                Debug.Log("El archivo que se quiere replacear no concuerda en la operacion y el usuario quiere ejecutarlo");
-                cmdToExecute.file.nombre = "";
-                rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
-                return false;
-            }
             else
             {
-                return true;
+                if (execute)
+                {
+                    Debug.Log("El archivo que se quiere replacear no concuerda en la operacion y el usuario quiere ejecutarlo");
+                    cmdToExecute.file.nombre = "";
+                    cmdToExecute.file.size = 1;
+                    rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
         }
         else
@@ -347,6 +678,7 @@ public class ExecuteCommandsManager : MonoBehaviour
             if (execute)
             {
                 cmdToExecute.file.nombre = "";
+                cmdToExecute.file.size = 1;
                 rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                 return false;
             }

@@ -62,8 +62,10 @@ public class RootSizeManager : MonoBehaviour
 
     public void addFile(FileData fileToAdd, ESlotState slotstate)
     {
+
         int sizeToAdd = fileToAdd.size;
 
+        //Si hay mas espacio del que entra en memoria, corrompemos posiciones ocupadas y libres
         if (sizeToAdd > emptySlots)
         {
             if (OnRootOverflow != null)
@@ -71,9 +73,10 @@ public class RootSizeManager : MonoBehaviour
 
             for (int i = 0; i < maxSlots && sizeToAdd > 0; i++)
             {
-                if (slots[i].slotData.state == ESlotState.FILLED)
+                if (slots[i].slotData.state == ESlotState.FILLED ||
+                    slots[i].slotData.state == ESlotState.EMPTY)
                 {
-                    slots[i].changeSlotData(new SlotData(null, ESlotState.BLOCKED));
+                    slots[i].changeSlotData(new SlotData(fileToAdd, ESlotState.BLOCKED));
                     sizeToAdd -= 1;
                     emptySlots -= 1;
                 }
@@ -110,6 +113,7 @@ public class RootSizeManager : MonoBehaviour
             }
         }
 
+        //Si no se ha borrado, hay un error porque el archivo a borrar no existe. Corrompemos una posicion
         if (!hasDeleted)
         {
             if (OnWrongDelete != null)
@@ -117,7 +121,6 @@ public class RootSizeManager : MonoBehaviour
 
             for (int i = 0; i < maxSlots; i++)
             {
-                Debug.Log(i);
                 if (slots[i].slotData.state == ESlotState.FILLED)
                 {
                     slots[i].changeSlotData(new SlotData(null, ESlotState.BLOCKED));
