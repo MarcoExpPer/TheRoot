@@ -27,9 +27,9 @@ public class ExecuteCommandsManager : MonoBehaviour
     public void confirmCommand(bool execute)
     {
         Debug.Log("Execute Command: " + execute + " " + cmdToExecute.commandType);
-        bool result = false;
+        bool result;
 
-        if(gameMan.lookForSudo && !cmdToExecute.isSudo)
+        if (gameMan.lookForSudo && !cmdToExecute.isSudo)
         {
             if (execute)
             {
@@ -60,8 +60,8 @@ public class ExecuteCommandsManager : MonoBehaviour
 
         updateCommand(cmdCreator.getNextCommand());
 
-        if(result)
-            gameMan.increasePoints(gameMan.level * 15);
+
+        gameMan.increasePoints(gameMan.level * 15);
     }
 
     public void Update()
