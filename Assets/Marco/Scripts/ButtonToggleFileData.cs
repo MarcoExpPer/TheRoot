@@ -17,7 +17,7 @@ public class ButtonToggleFileData : MonoBehaviour
             "Size: " + fileData.size.ToString() + "\n" +
             "Date: " + fileData.date.ToString() + "\n";
         
-        if(fileData.NameToReplace != null)
+        if(fileData.NameToReplace != null && fileData.NameToReplace != "")
         {
             text.text += "File to Replace: " + fileData.NameToReplace;
         }

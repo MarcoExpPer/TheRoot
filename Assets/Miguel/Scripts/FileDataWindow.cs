@@ -5,37 +5,32 @@ using UnityEngine;
 
 public class FileDataWindow : MonoBehaviour
 {
-
-
     [HideInInspector] public bool minimized = false;
 
+    [SerializeField]
+    TextMeshProUGUI text;
 
-
-
-    public void updateData(FileData file, ESlotState state)
+    public void updateData(FileData fileData, ESlotState state)
     {
-        TextMeshProUGUI[] texts = GetComponentsInChildren<TextMeshProUGUI>();
-
         if (state == ESlotState.BLOCKED)
         {
-            texts[0].text = "BLOCKED";
-            texts[1].text = "BLOCKED";
-            texts[2].text = "BLOCKED";
-            texts[3].text = "BLOCKED";
+            text.text = "Archivo bloqueado";
         }
         else if (state == ESlotState.VIRUS)
         {
-            texts[0].text = "VIRUS";
-            texts[1].text = "VIRUS";
-            texts[2].text = "VIRUS";
-            texts[3].text = "VIRUS";
+            text.text = "VIRUS VIRUS VIRUS VIRUS VIRUS VIRUS   vVIRUSVIRUSVIRUSVIRUSVIRUSVIRUSVIRUSVIRUSVIRUSVIRUSVIRUS\n VIRUS";
         }
         else
         {
-            texts[0].text = file.nombre;
-            texts[1].text = file.size.ToString();
-            texts[2].text = file.date.ToString();
-            texts[3].text = file.NameToReplace;
+            text.text =
+               "<b> " + fileData.nombre + "</b> \n" +
+               "Size: " + fileData.size.ToString() + "\n" +
+               "Date: " + fileData.date.ToString() + "\n";
+
+            if (fileData.NameToReplace != null && fileData.NameToReplace != "")
+            {
+                text.text += "File to Replace: " + fileData.NameToReplace;
+            }
         }
     }
 }
