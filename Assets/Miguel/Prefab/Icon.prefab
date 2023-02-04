@@ -121,7 +121,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7744737431734038887}
         m_TargetAssemblyTypeName: Icon, Assembly-CSharp
-        m_MethodName: OpenWindow
+        m_MethodName: ToggleWindow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

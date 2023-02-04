@@ -5,15 +5,12 @@ using UnityEngine.EventSystems;
 
 public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    private Canvas canvas;
     private RectTransform rt;
 
 
     private void Start()
     {
         rt = gameObject.GetComponent<RectTransform>();
-        canvas = transform.parent.GetComponent<Canvas>();
-
     }
 
 
@@ -24,7 +21,8 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
 
     public void OnDrag(PointerEventData EventData) 
     {
-        rt.anchoredPosition += EventData.delta / canvas.scaleFactor;
+        rt.anchoredPosition += EventData.delta;
+        transform.SetAsLastSibling();
     }
 
     public void OnEndDrag(PointerEventData EventData) 
