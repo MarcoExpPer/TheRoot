@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class GameManager : MonoBehaviour
 {
     float points = 0;
     float gameTime = 0;
+
+    bool blackScreenEffectDone = false;
 
     bool isGameRunning = true;
 
@@ -26,6 +30,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     eventManager eventMan;
 
+    [SerializeField]
+    Image blackPanel;
 
     [SerializeField]
     public Dictionary<int, float> levelToTimeBetweenCommands = new Dictionary<int, float>();
@@ -94,6 +100,12 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if(deathCounter >= 3 && !blackScreenEffectDone)
+        {
+            blackScreenEffectDone = true;
+            Debug.Log("Black effect");
+            StartCoroutine(blackScreenEffect());
+        }
         if(deathCounter == rootSizeManager.maxSlots)
         {
             isGameRunning = false;
@@ -111,5 +123,22 @@ public class GameManager : MonoBehaviour
 
             
         }
+    }
+
+    IEnumerator blackScreenEffect()
+    {
+
+        blackPanel.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        blackPanel.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+        blackPanel.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.2f);
+        blackPanel.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+        blackPanel.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.2f);
+        blackPanel.gameObject.SetActive(false);
+        yield return null;
     }
 }
