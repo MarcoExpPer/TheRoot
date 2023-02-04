@@ -26,6 +26,9 @@ public class currentActiveCommandBtn : MonoBehaviour
 
     [SerializeField]
     Sprite[] _commandSpritesToUse;
+
+    [SerializeField]
+    NotificationInstructionController _notifController;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,6 +48,7 @@ public class currentActiveCommandBtn : MonoBehaviour
         _commandImage.sprite = _commandSpritesToUse[(int)(cmd.commandType)];
         _commandImage.SetNativeSize();
 
+        _notifController.WriteNotification(cmd.notification);
         //text.text = cmd.commandType + " " + cmd.file.nombre;
     }
 

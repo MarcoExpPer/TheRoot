@@ -49,6 +49,7 @@ public class CmdStackController : MonoBehaviour
         for(int i = 0; i < cmdQueue.queueMaxSize; i++)
         {
             Command cmd = cmdQueue.getCommand(i);
+            
             int index = cmdQueue.queueMaxSize - i - 1;
 
             if (cmd == null)
@@ -58,6 +59,7 @@ public class CmdStackController : MonoBehaviour
             }
             else
             {
+                //Debug.Log(cmd.commandType);
                 _colorOperations[index].color = _operationColors[(int)cmd.commandType];
                 _operationImages[index].sprite = _spritesToUse[(int)cmd.commandType];
                 _operationImages[index].gameObject.SetActive(true);
