@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CmdCreator : MonoBehaviour
@@ -13,7 +14,19 @@ public class CmdCreator : MonoBehaviour
     private float spaceFactor = 1;
     [SerializeField] private float probabilityConst = 1;
 
+    private string[] sust = new string[21] { "File", "Text", "Mail", "Engine", "Unreal", "Game", "Troyan", 
+        "Music", "Disc", "Bug", "Key", "Unity", "Root", "Fort", "Burger",
+        "Number", "Fish", "Appliance", "Book", "Property", "Memory"};
+    private string[] adjs = new string[21] { "Importan", "Super", "Better", "Worst", "Bad", "Last", "New",
+        "Ultimate", "Red", "Yellow", "White", "Clueless", "Pointless", "Ready",
+        "Blue", "Detailed", "Royal", "Serious", "Old", "Chill", "Rooted"};
+    private string[] exts = new string[21] { "exe", "txt", "png", "jpg", "rar", "zip", "docx",
+        "gif", "mp4", "bat", "dll", "sys", "tar", "pdf",
+        "ico", "obj", "json", "xlsx", "mp3", "img", "root"};
+
     private bool alreadyOneBadInstruction = false;
+
+    private int numCommandToNextLevel = 4;
 
     [SerializeField]
     RootSizeManager rootSizeMan;
@@ -41,6 +54,12 @@ public class CmdCreator : MonoBehaviour
         {
             cmdQueue.OnQueueFilled += onQueueEventCallback;
         }
+
+        for (int i = 0; i < 40; i++)
+        {
+            Debug.Log(GenerateName());
+        }
+
     }
 
     void onQueueEventCallback()
@@ -91,7 +110,7 @@ public class CmdCreator : MonoBehaviour
             case 2:
                 //Segundo nivel
                 //Tareas aleatorias y añadimos sudo
-                //cmdToAdd = getLevelTwoCommand();
+                cmdToAdd = getLevelTwoCommand();
                 break;
 
             case 3:
@@ -128,12 +147,23 @@ public class CmdCreator : MonoBehaviour
                 new FileData("System32", Color.black, 1), false);
             default:
                 gameManager.UpdateLevel(2);
+                numCommandToNextLevel = Random.Range(5, 20);
                 commandCount = 0;
                 return new Command(ECommand.REPLACE, new cmdNotification("User", "User-32", ECommand.REPLACE),
                new FileData("User", Color.black, 1),
                new FileData("User-32", Color.black, 2), false);
         }
 
+    }
+
+    private Command getLevelTwoCommand()
+    {
+        if (numCommandToNextLevel > 0)
+        {
+            ECommand commandType = GetCommandType();
+
+        }
+        return null;
     }
 
     public Command getNextCommand()
@@ -259,5 +289,38 @@ public class CmdCreator : MonoBehaviour
         {
             return true;
         }
+    }
+
+
+    private string GenerateName()
+    {
+        string name = "";
+        //20% de tener "_" entre cada palabra
+        bool hasGuionBajo = (Random.Range(1, 5) == 1);
+
+        //33% de tener un adjetivo al principio
+        if (Random.Range(1, 3) == 1)
+        {
+            name += adjs[Random.Range(0, adjs.Length)];
+            if (hasGuionBajo)
+            {
+                name += "_";
+            }
+        }
+        //Añadimos un sustantivo
+        name += sust[Random.Range(0, sust.Length)];
+        //50% de añadir otro adjetivo
+        if (Random.Range(1, 2) == 1)
+        {
+            if (hasGuionBajo)
+            {
+                name += "_";
+            }
+            name += adjs[Random.Range(0, adjs.Length)];
+        }
+        //Añadimos la extension
+        name += "." + exts[Random.Range(0, exts.Length)];
+
+        return name;
     }
 }
