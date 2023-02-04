@@ -53,6 +53,8 @@ public class currentActiveCommandBtn : MonoBehaviour
         _commandImage.sprite = _commandSpritesToUse[(int)(cmd.commandType)];
         _commandImage.SetNativeSize();
 
+        _sudoImage.SetActive(cmd.isSudo);
+
         _notifController.WriteNotification(cmd.notification);
         //text.text = cmd.commandType + " " + cmd.file.nombre;
     }
