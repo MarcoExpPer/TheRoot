@@ -161,6 +161,117 @@ public class CmdCreator : MonoBehaviour
         if (numCommandToNextLevel > 0)
         {
             ECommand commandType = GetCommandType();
+            string fileName = "";
+            Color fileColor = Color.red;
+            int fileSize = 1;
+            bool fileSudo = false;
+
+            numCommandToNextLevel--;
+
+            if (commandType == ECommand.ADD)
+            {
+                fileName = GenerateName();
+                fileColor = GenerateColor();
+                fileSize = GenerateSize();
+                fileSudo = decideSudo();
+                return new Command(ECommand.ADD, new cmdNotification(fileName, ECommand.ADD),
+                new FileData(fileName, fileColor, fileSize), fileSudo);
+            }
+            else if(commandType == ECommand.DELETE)
+            {
+                List<int> p = new List<int>();
+                for (int i = 0; i < rootSizeMan.slots.Count; i++)
+                {
+                    if (rootSizeMan.slots[i].slotData.state != ESlotState.EMPTY)
+                    {
+                        p.Add(i);
+                    }
+                }
+
+                //si no hay ningun archivo pues se genera un nombre aleatorio y listo
+                if (p.Count != 0)
+                {
+                    int a = p[Random.Range(0, p.Count)];
+                    fileName = rootSizeMan.slots[a].slotData.fileData.nombre;
+                    fileColor = rootSizeMan.slots[a].slotData.fileData.origen;
+                    fileSize = rootSizeMan.slots[a].slotData.fileData.size;
+                    fileSudo = decideSudo();
+                }
+                else
+                {
+                    fileName = GenerateName();
+                    fileColor = GenerateColor();
+                    fileSize = GenerateSize();
+                    fileSudo = decideSudo();
+                }
+
+                return new Command(ECommand.DELETE, new cmdNotification(fileName, ECommand.DELETE),
+                    new FileData(fileName, fileColor, fileSize), fileSudo);
+            }
+            else if (commandType == ECommand.REPLACE)
+            {
+                List<int> p = new List<int>();
+                for (int i = 0; i < rootSizeMan.slots.Count; i++)
+                {
+                    if (rootSizeMan.slots[i].slotData.state != ESlotState.EMPTY)
+                    {
+                        p.Add(i);
+                    }
+                }
+
+                //si no hay ningun archivo pues se genera un nombre aleatorio y listo
+                if (p.Count != 0)
+                {
+                    int a = p[Random.Range(0, p.Count)];
+                    fileName = rootSizeMan.slots[a].slotData.fileData.nombre;
+                    fileColor = rootSizeMan.slots[a].slotData.fileData.origen;
+                    fileSize = rootSizeMan.slots[a].slotData.fileData.size;
+                    fileSudo = decideSudo();
+                }
+                else
+                {
+                    fileName = GenerateName();
+                    fileColor = GenerateColor();
+                    fileSize = GenerateSize();
+                    fileSudo = decideSudo();
+                }
+
+                return new Command(ECommand.REPLACE, new cmdNotification(fileName, ECommand.REPLACE),
+                    new FileData(fileName, fileColor, fileSize), fileSudo);
+            }
+            else if (commandType == ECommand.COPY)
+            {
+                List<int> p= new List<int>();
+                for (int i = 0; i < rootSizeMan.slots.Count; i++)
+                {
+                    if (rootSizeMan.slots[i].slotData.state != ESlotState.EMPTY)
+                    {
+                        p.Add(i);
+                    }
+                }
+                //si no hay ningun archivo pues se genera un nombre aleatorio y listo
+                if (p.Count != 0)
+                {
+                    int a = p[Random.Range(0, p.Count)];
+                    fileName = rootSizeMan.slots[a].slotData.fileData.nombre;
+                    fileColor = rootSizeMan.slots[a].slotData.fileData.origen;
+                    fileSize = rootSizeMan.slots[a].slotData.fileData.size;
+                    fileSudo = decideSudo();
+                }
+                else
+                {
+                    fileName = GenerateName();
+                    fileColor = GenerateColor();
+                    fileSize = GenerateSize();
+                    fileSudo = decideSudo();
+                }
+
+
+                return new Command(ECommand.COPY, new cmdNotification(fileName, ECommand.COPY),
+                    new FileData(fileName, fileColor, fileSize),
+                    new FileData(fileName + "Copy", fileColor, fileSize), fileSudo);
+            }
+
 
         }
         return null;
@@ -323,4 +434,18 @@ public class CmdCreator : MonoBehaviour
 
         return name;
     }
+
+    private int GenerateSize()
+    {
+        List<int> sizes = new List<int>() { 1, 1, 1, 2, 2, 3 };
+        return sizes[Random.Range(0, sizes.Count)];
+    }
+
+    private Color GenerateColor()
+    {
+        List<Color> colors = new List<Color>() { Color.blue, Color.green, Color.red, Color.yellow };
+        return colors[Random.Range(0, colors.Count)];
+
+    }
+
 }
