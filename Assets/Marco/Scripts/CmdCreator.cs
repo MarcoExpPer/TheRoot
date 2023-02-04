@@ -134,24 +134,24 @@ public class CmdCreator : MonoBehaviour
         {
             case 0:
                 return new Command(ECommand.ADD, new cmdNotification("System32", ECommand.ADD),
-                new FileData("System32", Color.black, 1), false);
+                new FileData("System32", GenerateColor(), 1), false);
             case 1:
                 return new Command(ECommand.ADD, new cmdNotification("User", ECommand.ADD),
-                new FileData("User", Color.black, 3), false);
+                new FileData("User", GenerateColor(), 3), false);
             case 2:
                 return new Command(ECommand.COPY, new cmdNotification("System32", ECommand.COPY),
-                new FileData("System32", Color.black, 1),
-                new FileData("System32-copia", Color.black, 1), false);
+                new FileData("System32", GenerateColor(), 1),
+                new FileData("System32-copia", GenerateColor(), 1), false);
             case 3:
                 return new Command(ECommand.DELETE, new cmdNotification("System32", ECommand.DELETE),
-                new FileData("System32", Color.black, 1), false);
+                new FileData("System32", GenerateColor(), 1), false);
             default:
                 gameManager.UpdateLevel(2);
                 numCommandToNextLevel = Random.Range(5, 20);
                 commandCount = 0;
                 return new Command(ECommand.REPLACE, new cmdNotification("User", "User-32", ECommand.REPLACE),
-               new FileData("User", Color.black, 1, "User-32"),
-               new FileData("User-32", Color.black, 2), false);
+               new FileData("User", GenerateColor(), 1, "User-32"),
+               new FileData("User-32", GenerateColor(), 2), false);
         }
 
     }

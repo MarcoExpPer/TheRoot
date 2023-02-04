@@ -34,7 +34,6 @@ public class ExecuteCommandsManager : MonoBehaviour
 
         if (gameMan.lookForSudo && !cmdToExecute.isSudo)
         {
-            Debug.Log("absdasda");
             if (execute)
             {
                 cmdToExecute.file.size = 2;
@@ -46,7 +45,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                 result = true;
             }
         }
-        Debug.Log("Command result " + result);
+        
         switch (cmdToExecute.commandType)
         {
             case ECommand.ADD:
@@ -63,11 +62,11 @@ public class ExecuteCommandsManager : MonoBehaviour
                 break;
         }
 
+        Debug.Log("Command result " + result);
         updateCommand(cmdCreator.getNextCommand());
 
         if (result)
         {
-            audioSource.Play();
             gameMan.increasePoints(gameMan.level * 15);
         }
         
@@ -361,7 +360,7 @@ public class ExecuteCommandsManager : MonoBehaviour
     public void updateCommand(Command cmd)
     {
         cmdToExecute = cmd;
-        fileInMiddleOfTheScreen.fileData = cmd.file;
+        fileInMiddleOfTheScreen.UpdateFileData(cmd.file);
         activeBtn.updateCommand(cmd);
     }
 

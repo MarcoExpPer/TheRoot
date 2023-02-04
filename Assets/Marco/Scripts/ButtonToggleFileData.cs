@@ -19,7 +19,7 @@ public class ButtonToggleFileData : MonoBehaviour
         
         if(fileData.NameToReplace != null && fileData.NameToReplace != "")
         {
-            text.text += "File to Replace: " + fileData.NameToReplace;
+            text.text += "File that will replace the previous file: " + fileData.NameToReplace;
         }
     }
 }
