@@ -21,21 +21,24 @@ public class ExecuteCommandsManager : MonoBehaviour
     [SerializeField]
     activateDisactivate fileInMiddleOfTheScreen;
 
+    AudioSource audioSource;
     public void Start()
     {
-  
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void confirmCommand(bool execute)
     {
         Debug.Log("Execute Command: " + execute + " " + cmdToExecute.commandType);
-        bool result;
+        bool result = false;
 
         if (gameMan.lookForSudo && !cmdToExecute.isSudo)
         {
+            Debug.Log("absdasda");
             if (execute)
             {
                 cmdToExecute.file.size = 2;
+                cmdToExecute.file.nombre = "";
                 rootSizemanager.addFile(cmdToExecute.file, ESlotState.VIRUS);
             }
             else
@@ -43,7 +46,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                 result = true;
             }
         }
-
+        Debug.Log("Command result " + result);
         switch (cmdToExecute.commandType)
         {
             case ECommand.ADD:
@@ -62,8 +65,12 @@ public class ExecuteCommandsManager : MonoBehaviour
 
         updateCommand(cmdCreator.getNextCommand());
 
-
-        gameMan.increasePoints(gameMan.level * 15);
+        if (result)
+        {
+            audioSource.Play();
+            gameMan.increasePoints(gameMan.level * 15);
+        }
+        
     }
 
     public void Update()
@@ -99,6 +106,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                 //Si es un comando correcto, pero el usuario decide descartar este comando
                 else
                 {
+                    cmdToExecute.file.nombre = "";
                     rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                     return false;
                 }
@@ -109,6 +117,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                 if (execute)
                 {
                     cmdToExecute.file.size = 2;
+                    cmdToExecute.file.nombre = "";
                     rootSizemanager.addFile(cmdToExecute.file, ESlotState.VIRUS);
                     return false;
                 }
@@ -125,6 +134,7 @@ public class ExecuteCommandsManager : MonoBehaviour
             if (execute)
             {
                 cmdToExecute.file.size = 2;
+                cmdToExecute.file.nombre = "";
                 rootSizemanager.addFile(cmdToExecute.file, ESlotState.VIRUS);
                 return false;
             }
@@ -157,6 +167,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                     else
                     {
                         Debug.Log("El archivo que se quiere copiar existe y el usuario NO quiere ejecutarlo");
+                        cmdToExecute.file.nombre = "";
                         rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                         return false;
                     }
@@ -168,6 +179,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                     {
                         Debug.Log("El archivo que se quiere copiar no existe en la root y el usuario quiere ejecutarlo");
                         cmdToExecute.secondaryFile.size = 2;
+                        cmdToExecute.file.nombre = "";
                         rootSizemanager.addFile(cmdToExecute.secondaryFile, ESlotState.VIRUS);
                         return false;
                     }
@@ -182,6 +194,7 @@ public class ExecuteCommandsManager : MonoBehaviour
             {
                 Debug.Log("El archivo que se quiere copiar no concuerda en la operacion y el usuario quiere ejecutarlo");
                 cmdToExecute.secondaryFile.size = 2;
+                cmdToExecute.secondaryFile.nombre = "";
                 rootSizemanager.addFile(cmdToExecute.secondaryFile, ESlotState.VIRUS);
                 return false;
             }
@@ -195,6 +208,7 @@ public class ExecuteCommandsManager : MonoBehaviour
             {
                 Debug.Log("El archivo que se quiere copiar no concuerda en el nombre y el usuario quiere ejecutarlo");
                 cmdToExecute.secondaryFile.size = 2;
+                cmdToExecute.secondaryFile.nombre = "";
                 rootSizemanager.addFile(cmdToExecute.secondaryFile, ESlotState.VIRUS);
                 return false;
             }
@@ -225,6 +239,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                     else
                     {
                         Debug.Log("El archivo que se quiere eliminar existe y el usuario NO quiere ejecutarlo");
+                        cmdToExecute.file.nombre = "";
                         rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                         return false;
                     }
@@ -235,6 +250,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                     if (execute)
                     {
                         Debug.Log("El archivo que se quiere eliminar no existe en la root y el usuario quiere ejecutarlo");
+                        cmdToExecute.file.nombre = "";
                         rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                         return false;
                     }
@@ -247,6 +263,7 @@ public class ExecuteCommandsManager : MonoBehaviour
             if (execute)
             {
                 Debug.Log("El archivo que se quiere eliminar no concuerda en la operacion y el usuario quiere ejecutarlo");
+                cmdToExecute.file.nombre = "";
                 rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                 return false;
             }
@@ -259,6 +276,7 @@ public class ExecuteCommandsManager : MonoBehaviour
         {
             if (execute)
             {
+                cmdToExecute.file.nombre = "";
                 rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                 return false;
             }
@@ -292,6 +310,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                     else
                     {
                         Debug.Log("El archivo que se quiere replacear existe y el usuario NO quiere ejecutarlo");
+                        cmdToExecute.file.nombre = "";
                         rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                         return false;
                     }
@@ -302,6 +321,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                     if (execute)
                     {
                         Debug.Log("El archivo que se quiere replacear no existe en la root y el usuario quiere ejecutarlo");
+                        cmdToExecute.file.nombre = "";
                         rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                         return false;
                     }
@@ -314,6 +334,7 @@ public class ExecuteCommandsManager : MonoBehaviour
             if (execute)
             {
                 Debug.Log("El archivo que se quiere replacear no concuerda en la operacion y el usuario quiere ejecutarlo");
+                cmdToExecute.file.nombre = "";
                 rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                 return false;
             }
@@ -326,6 +347,7 @@ public class ExecuteCommandsManager : MonoBehaviour
         {
             if (execute)
             {
+                cmdToExecute.file.nombre = "";
                 rootSizemanager.addFile(cmdToExecute.file, ESlotState.BLOCKED);
                 return false;
             }
