@@ -150,7 +150,7 @@ public class CmdCreator : MonoBehaviour
                 numCommandToNextLevel = Random.Range(5, 20);
                 commandCount = 0;
                 return new Command(ECommand.REPLACE, new cmdNotification("User", "User-32", ECommand.REPLACE),
-               new FileData("User", Color.black, 1),
+               new FileData("User", Color.black, 1, "User-32"),
                new FileData("User-32", Color.black, 2), false);
         }
 
@@ -236,7 +236,8 @@ public class CmdCreator : MonoBehaviour
                     fileSudo = decideSudo();
                 }
 
-                return new Command(ECommand.REPLACE, new cmdNotification(fileName, ECommand.REPLACE),
+                return new Command(ECommand.REPLACE, 
+                    new cmdNotification(fileName, ECommand.REPLACE),
                     new FileData(fileName, fileColor, fileSize), fileSudo);
             }
             else if (commandType == ECommand.COPY)
