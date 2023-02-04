@@ -4901,6 +4901,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2080324949}
+        m_TargetAssemblyTypeName: activateDisactivate, Assembly-CSharp
+        m_MethodName: toggle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &906840559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10647,6 +10659,18 @@ MonoBehaviour:
       - m_Target: {fileID: 367218909}
         m_TargetAssemblyTypeName: ExecuteCommandsManager, Assembly-CSharp
         m_MethodName: executeCommand
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2080324949}
+        m_TargetAssemblyTypeName: activateDisactivate, Assembly-CSharp
+        m_MethodName: toggle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
