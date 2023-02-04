@@ -15,7 +15,10 @@ public class SlotData
     public ESlotState state = ESlotState.EMPTY;
     public FileData fileData;
 
-    public SlotData() { }
+    public SlotData() {
+        state = ESlotState.EMPTY;
+        fileData = null;
+    }
     public SlotData(FileData filed, ESlotState st)
     {
         state = st;
@@ -54,21 +57,10 @@ public class RootSizeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            FileData newFile = new FileData("nombre " + count, Color.red, 1);
-
-            addFile(newFile);
-
-
-
-            count++;
-        }
     }
 
 
-    void addFile(FileData fileToAdd)
+    public void addFile(FileData fileToAdd, ESlotState slotstate)
     {
         int sizeToAdd = fileToAdd.size;
 
@@ -94,7 +86,7 @@ public class RootSizeManager : MonoBehaviour
             {
                 if (slots[i].slotData.state == ESlotState.EMPTY)
                 {
-                    slots[i].changeSlotData(new SlotData(fileToAdd, ESlotState.FILLED));
+                    slots[i].changeSlotData(new SlotData(fileToAdd, slotstate));
                     sizeToAdd -= 1;
                     emptySlots -= 1;
                 }
@@ -105,7 +97,7 @@ public class RootSizeManager : MonoBehaviour
             OnRootChanged.Invoke();
     }
 
-    void deleteFIle(string fileName)
+    public void deleteFIle(string fileName)
     {
         bool hasDeleted = false;
         for (int i = 0; i < maxSlots; i++)

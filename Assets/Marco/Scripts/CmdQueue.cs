@@ -21,7 +21,7 @@ public class CmdQueue : MonoBehaviour
 
     public void addCommand(Command commandToAdd)
     {
-        if(currentQueueSize < queueMaxSize)
+        if (currentQueueSize < queueMaxSize)
         {
             queue.Add(commandToAdd);
             OnQueueChanged.Invoke(currentQueueSize, EQueueChangedAction.ADD_CMD, commandToAdd);
@@ -36,14 +36,14 @@ public class CmdQueue : MonoBehaviour
 
     public Command popCommand()
     {
-        if (currentQueueSize != 0)
+        if (currentQueueSize > 0)
         {
             currentQueueSize -= 1;
             Command removedCmd = queue[0];
             queue.RemoveAt(0);
 
             OnQueueChanged.Invoke(0, EQueueChangedAction.DEL_CMD, null);
-
+            
             return removedCmd; 
         }
         else

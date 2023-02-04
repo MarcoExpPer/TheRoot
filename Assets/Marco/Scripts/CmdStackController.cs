@@ -55,7 +55,6 @@ public class CmdStackController : MonoBehaviour
             }
         }
 
-
         if (cmdQueue == null)
         {
             Debug.Log("Cola vacia");
@@ -74,8 +73,6 @@ public class CmdStackController : MonoBehaviour
             Command cmd = cmdQueue.getCommand(i);
             int index = cmdQueue.queueMaxSize - i - 1;
 
-            Debug.Log(index);
-
             if (cmd == null)
             {
                 texts[index].text = " (empty) ";
@@ -89,14 +86,19 @@ public class CmdStackController : MonoBehaviour
 
     void onQueueChanged(int index, EQueueChangedAction action, Command cmd)
     {
+        Debug.Log("Cambios");
         if (action == EQueueChangedAction.DEL_CMD)
         {
+            Debug.Log("Something removed");
             updateAllText();
         }
         else
         {
+            Debug.Log("Something added");
             index = cmdQueue.queueMaxSize - index - 1;
             texts[index].text = CmdQueue.printCommandInStack(cmd);
         }
     }
+
+ 
 }

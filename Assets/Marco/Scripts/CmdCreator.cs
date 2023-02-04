@@ -70,7 +70,7 @@ public class CmdCreator : MonoBehaviour
         currentTime = 0;
         timeBetweenCmd = gameManager.levelToTimeBetweenCommands.GetValueOrDefault(gameManager.level);
 
-        Command cmdToadd = new Command(ECommand.ADD, new FileData("Erorr al crear este archivo", Color.green, 1), false);
+        Command cmdToadd = new Command(ECommand.ADD, new cmdNotification("Archivo1", ECommand.ADD), new FileData("Archivo1", Color.black, 1), false);
 
         switch (gameManager.level)
         {
@@ -89,7 +89,7 @@ public class CmdCreator : MonoBehaviour
 
                 break;
         }
-
+        
         cmdQueue.addCommand(cmdToadd);
         commandCount++;
     }
@@ -100,19 +100,40 @@ public class CmdCreator : MonoBehaviour
         switch (commandCount)
         {
             case 0:
-                return new Command(ECommand.ADD, new FileData("Archivo1", Color.black,1 ), false);
+                return new Command(ECommand.ADD, new cmdNotification("Archivo1", ECommand.ADD), 
+                    new FileData("Archivo1", Color.black,1 ), false);
             case 1:
-                return new Command(ECommand.COPY, new FileData("Archivo1", Color.black, 1), new FileData("Archivo1 Copy", Color.black, 1), false);
+                return new Command(ECommand.COPY, new cmdNotification("Archivo1", ECommand.COPY), 
+                    new FileData("Archivo1", Color.black, 1), 
+                    new FileData("Archivo1 Copy", Color.black, 1), false);
             case 2:
-                return new Command(ECommand.ADD, new FileData("Archivo2", Color.black, 3), false);
+                return new Command(ECommand.ADD, new cmdNotification("Archivo2", ECommand.ADD), 
+                    new FileData("Archivo2", Color.black, 3), false);
             case 3:
-                return new Command(ECommand.DELETE, new FileData("Archivo1", Color.black, 1), false);
+                return new Command(ECommand.DELETE, new cmdNotification("Archivo1", ECommand.ADD), 
+                    new FileData("Archivo1", Color.black, 1), false);
             default:
                 gameManager.level = 2;
-                return new Command(ECommand.REPLACE, new FileData("Archivo1 Copy", Color.black, 1), new FileData("Archivo3", Color.black, 2), false);
+                commandCount = 0;
+                return new Command(ECommand.REPLACE, new cmdNotification("Archivo1 Copy", "Archivo3", ECommand.ADD), 
+                    new FileData("Archivo1 Copy", Color.black, 1), 
+                    new FileData("Archivo3", Color.black, 2), false);
 
         }
        
+    }
+
+    public Command getNextCommand()
+    {
+        Command cmd = cmdQueue.popCommand();
+       
+        if (cmd == null)
+        {
+            addCommandToQueue();
+            cmd = cmdQueue.popCommand();
+        }
+
+        return cmd;
     }
 
 }
