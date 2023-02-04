@@ -29,7 +29,7 @@ public class SlotData
 public class RootSizeManager : MonoBehaviour
 {
     public int maxSlots = 8;
-    int emptySlots;
+    public int emptySlots;
 
     [SerializeField]
     public List<RootFileBtn> slots;
