@@ -51,8 +51,9 @@ public class CmdCreator : MonoBehaviour
 
             if (currentTime >= timeBetweenCmd)
             {
-                currentTime = 0;
+                
                 addCommandToQueue();
+                
             }
         }
 
@@ -66,6 +67,9 @@ public class CmdCreator : MonoBehaviour
 
     void addCommandToQueue()
     {
+        currentTime = 0;
+        timeBetweenCmd = gameManager.levelToTimeBetweenCommands.GetValueOrDefault(gameManager.level);
+
         Command cmdToadd = new Command(ECommand.ADD, new FileData("Erorr al crear este archivo", Color.green, 1), false);
 
         switch (gameManager.level)
@@ -104,6 +108,7 @@ public class CmdCreator : MonoBehaviour
             case 3:
                 return new Command(ECommand.DELETE, new FileData("Archivo1", Color.black, 1), false);
             default:
+                gameManager.level = 2;
                 return new Command(ECommand.REPLACE, new FileData("Archivo1 Copy", Color.black, 1), new FileData("Archivo3", Color.black, 2), false);
 
         }
