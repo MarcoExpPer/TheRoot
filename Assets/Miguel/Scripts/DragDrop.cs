@@ -5,7 +5,6 @@ using UnityEngine.EventSystems;
 
 public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    public Canvas canvas;
     public RectTransform rt;
 
 

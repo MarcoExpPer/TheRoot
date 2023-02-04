@@ -36,7 +36,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     public Dictionary<int, float> levelToTimeBetweenCommands = new Dictionary<int, float>();
 
-
     public int level = 1;
 
     public GameManager()

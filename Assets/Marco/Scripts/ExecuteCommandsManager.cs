@@ -15,9 +15,11 @@ public class ExecuteCommandsManager : MonoBehaviour
     [SerializeField]
     currentActiveCommandBtn activeBtn;
 
-
     [SerializeField]
     GameManager gameMan;
+
+    [SerializeField]
+    activateDisactivate fileInMiddleOfTheScreen;
 
     public void Start()
     {
@@ -337,6 +339,7 @@ public class ExecuteCommandsManager : MonoBehaviour
     public void updateCommand(Command cmd)
     {
         cmdToExecute = cmd;
+        fileInMiddleOfTheScreen.fileData = cmd.file;
         activeBtn.updateCommand(cmd);
     }
 
