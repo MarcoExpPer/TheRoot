@@ -100,11 +100,11 @@ public class LimitDate : OurEvents
     {
         if (limitBeforeDate)
         {
-            return "From now on, we wont accept outdated files older than " + date;
+            return "From now on, we wont accept outdated files older than " + date.ToString();
         }
         else
         {
-            return "We have found some weird files from the future, dont accept any from after " + date;
+            return "We have found some weird files from the future, dont accept any from after " + date.ToString();
         }
     }
 }

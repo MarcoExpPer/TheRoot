@@ -12,22 +12,20 @@ public class FileData
 
     public FileData() { }
 
-    public FileData(string name, DateTime date, Color origin, int tamano)
+    public FileData(string name, Color origin, int tamano)
     {
         nombre = name;
         origen = origin;
         size = tamano;
-        this.date = date;
+        this.date = GetRandomDate();
     }
-    public FileData(string name, DateTime date, Color origin, int tamano, string nameToReplace)
+    public FileData(string name, Color origin, int tamano, string nameToReplace)
     {
         nombre = name;
         origen = origin;
         size = tamano;
-        this.date = date;
+        this.date = GetRandomDate();
         this.NameToReplace = nameToReplace;
-
-        
     }
 
     public static DateTime GetRandomDate()

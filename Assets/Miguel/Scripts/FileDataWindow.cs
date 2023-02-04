@@ -34,7 +34,7 @@ public class FileDataWindow : MonoBehaviour
         {
             texts[0].text = file.nombre;
             texts[1].text = file.size.ToString();
-            texts[2].text = file.date;
+            texts[2].text = file.date.ToString();
             texts[3].text = file.NameToReplace;
         }
     }
