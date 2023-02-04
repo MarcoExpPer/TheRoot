@@ -29,6 +29,9 @@ public class currentActiveCommandBtn : MonoBehaviour
 
     [SerializeField]
     NotificationInstructionController _notifController;
+
+    [SerializeField]
+    AntivirusInvoker _antiVoker;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +47,8 @@ public class currentActiveCommandBtn : MonoBehaviour
     {
         command = cmd;
         _fileButton.image.sprite = _fileSpritesToUse[0];
+
+        _antiVoker._file = cmd.file;
 
         _commandImage.sprite = _commandSpritesToUse[(int)(cmd.commandType)];
         _commandImage.SetNativeSize();

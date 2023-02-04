@@ -9,23 +9,26 @@ public class FileData
     public Color origen = Color.black;
     public int size = 1;
     public string NameToReplace = "";
+    public bool isVirus = false;
 
     public FileData() { }
 
-    public FileData(string name, Color origin, int tamano)
+    public FileData(string name, Color origin, int tamano, bool isVirus = false)
     {
         nombre = name;
         origen = origin;
         size = tamano;
         this.date = GetRandomDate();
+        this.isVirus = isVirus;
     }
-    public FileData(string name, Color origin, int tamano, string nameToReplace)
+    public FileData(string name, Color origin, int tamano, string nameToReplace, bool isVirus = false)
     {
         nombre = name;
         origen = origin;
         size = tamano;
         this.date = GetRandomDate();
         this.NameToReplace = nameToReplace;
+        this.isVirus = isVirus;
     }
 
     public static DateTime GetRandomDate()
