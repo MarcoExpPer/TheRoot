@@ -271,7 +271,7 @@ public class CmdCreator : MonoBehaviour
                 if (!correctName)
                 {
                     return new Command(ECommand.REPLACE,
-                    new cmdNotification(fileName, GenerateName(), ECommand.REPLACE),
+                    new cmdNotification(GenerateName(), fileName2, ECommand.REPLACE),
                     new FileData(fileName, fileColor, fileSize),
                     new FileData(fileName2, fileColor2, fileSize2), fileSudo2);
                 }
