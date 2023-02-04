@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Marco/Menu.unity
+    guid: 7ae5e04e3feb1df46a0dbe3895b63757
+  - enabled: 1
+    path: Assets/Marco/TestScene.unity
+    guid: 5c6013f1d21ea4c40b1dd6550a161bb0
+  - enabled: 1
+    path: Assets/Marco/Credits.unity
+    guid: 3d1007c6b339ab4488f0f95576c97780
   m_configObjects: {}
