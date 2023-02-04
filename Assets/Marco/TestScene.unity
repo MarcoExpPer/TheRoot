@@ -4903,7 +4903,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 2080324949}
         m_TargetAssemblyTypeName: activateDisactivate, Assembly-CSharp
-        m_MethodName: toggle
+        m_MethodName: disactivate
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10670,7 +10670,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 2080324949}
         m_TargetAssemblyTypeName: activateDisactivate, Assembly-CSharp
-        m_MethodName: toggle
+        m_MethodName: disactivate
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
