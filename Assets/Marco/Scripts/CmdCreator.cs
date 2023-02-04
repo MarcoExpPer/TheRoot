@@ -51,9 +51,9 @@ public class CmdCreator : MonoBehaviour
 
             if (currentTime >= timeBetweenCmd)
             {
-                
+
                 addCommandToQueue();
-                
+
             }
         }
 
@@ -89,7 +89,7 @@ public class CmdCreator : MonoBehaviour
 
                 break;
         }
-        
+
         cmdQueue.addCommand(cmdToadd);
         commandCount++;
     }
@@ -100,33 +100,34 @@ public class CmdCreator : MonoBehaviour
         switch (commandCount)
         {
             case 0:
-                return new Command(ECommand.ADD, new cmdNotification("Archivo1", ECommand.ADD), 
-                    new FileData("Archivo1", Color.black,1 ), false);
+                return new Command(ECommand.ADD, new cmdNotification("System32", ECommand.ADD),
+                    new FileData("System32", Color.black, 1), false);
             case 1:
-                return new Command(ECommand.COPY, new cmdNotification("Archivo1", ECommand.COPY), 
-                    new FileData("Archivo1", Color.black, 1), 
-                    new FileData("Archivo1 Copy", Color.black, 1), false);
+                return new Command(ECommand.ADD, new cmdNotification("User", ECommand.ADD),
+                    new FileData("User", Color.black, 3), false);
             case 2:
-                return new Command(ECommand.ADD, new cmdNotification("Archivo2", ECommand.ADD), 
-                    new FileData("Archivo2", Color.black, 3), false);
+                return new Command(ECommand.COPY, new cmdNotification("System32", ECommand.COPY),
+                    new FileData("System32", Color.black, 1),
+                    new FileData("System32-copia", Color.black, 1), false);
+          
             case 3:
-                return new Command(ECommand.DELETE, new cmdNotification("Archivo1", ECommand.DELETE), 
-                    new FileData("Archivo1", Color.black, 1), false);
+                return new Command(ECommand.DELETE, new cmdNotification("System32", ECommand.DELETE),
+                    new FileData("System32", Color.black, 1), false);
             default:
-                gameManager.level = 2;
+                gameManager.UpdateLevel(2);
                 commandCount = 0;
-                return new Command(ECommand.REPLACE, new cmdNotification("Archivo1 Copy", "Archivo3", ECommand.REPLACE), 
-                    new FileData("Archivo1 Copy", Color.black, 1), 
-                    new FileData("Archivo3", Color.black, 2), false);
+                return new Command(ECommand.REPLACE, new cmdNotification("User", "User-32", ECommand.REPLACE),
+                    new FileData("User", Color.black, 1),
+                    new FileData("User-32", Color.black, 2), false);
 
         }
-       
+
     }
 
     public Command getNextCommand()
     {
         Command cmd = cmdQueue.popCommand();
-       
+
         if (cmd == null)
         {
             addCommandToQueue();

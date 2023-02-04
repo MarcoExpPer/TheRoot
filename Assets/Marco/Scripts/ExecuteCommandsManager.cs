@@ -15,6 +15,10 @@ public class ExecuteCommandsManager : MonoBehaviour
     [SerializeField]
     currentActiveCommandBtn activeBtn;
 
+
+    [SerializeField]
+    GameManager gameMan;
+
     public void Start()
     {
   
@@ -24,6 +28,20 @@ public class ExecuteCommandsManager : MonoBehaviour
     {
         Debug.Log("Execute Command: " + execute + " " + cmdToExecute.commandType);
         bool result;
+
+        if(gameMan.lookForSudo && !cmdToExecute.isSudo)
+        {
+            if (execute)
+            {
+                cmdToExecute.file.size = 2;
+                rootSizemanager.addFile(cmdToExecute.file, ESlotState.VIRUS);
+            }
+            else
+            {
+                result = true;
+            }
+        }
+
         switch (cmdToExecute.commandType)
         {
             case ECommand.ADD:
@@ -41,6 +59,8 @@ public class ExecuteCommandsManager : MonoBehaviour
         }
 
         updateCommand(cmdCreator.getNextCommand());
+
+        gameMan.increasePoints(gameMan.level * 15);
     }
 
     public void Update()
@@ -122,15 +142,7 @@ public class ExecuteCommandsManager : MonoBehaviour
             if (ECommand.COPY == cmdToExecute.notification.op)
             {
                 //Comprobar si existe el archivo que se pretende copiar
-                bool exists = false;
-                for(int i = 0; i < rootSizemanager.maxSlots && !exists; i++)
-                {
-                    if (rootSizemanager.slots[i].slotData.fileData != null &&
-                       rootSizemanager.slots[i].slotData.fileData.nombre == cmdToExecute.file.nombre)
-                    {
-                        exists = true;
-                    }
-                }
+                bool exists = checkIfFileNameExists(cmdToExecute.file.nombre);
 
                 if (exists)
                 {
@@ -197,15 +209,7 @@ public class ExecuteCommandsManager : MonoBehaviour
             if (ECommand.DELETE == cmdToExecute.notification.op)
             {
                 //Comprobar si existe el archivo que se pretende eliminar
-                bool exists = false;
-                for (int i = 0; i < rootSizemanager.maxSlots && !exists; i++)
-                {
-                    if (rootSizemanager.slots[i].slotData.fileData != null &&
-                       rootSizemanager.slots[i].slotData.fileData.nombre == cmdToExecute.file.nombre)
-                    {
-                        exists = true;
-                    }
-                }
+                bool exists = checkIfFileNameExists(cmdToExecute.file.nombre);
 
                 if (exists)
                 {
@@ -271,15 +275,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                 Debug.Log(cmdToExecute.file);
 
                 //Comprobar si existe el archivo que se pretende replacear
-                bool exists = false;
-                for (int i = 0; i < rootSizemanager.maxSlots && !exists; i++)
-                {
-                    if (rootSizemanager.slots[i].slotData.fileData != null && 
-                        rootSizemanager.slots[i].slotData.fileData.nombre == cmdToExecute.file.nombre)
-                    {
-                        exists = true;
-                    }
-                }
+                bool exists = checkIfFileNameExists(cmdToExecute.file.nombre);
 
                 if (exists)
                 {
@@ -341,5 +337,18 @@ public class ExecuteCommandsManager : MonoBehaviour
     {
         cmdToExecute = cmd;
         activeBtn.updateCommand(cmd);
+    }
+
+    private bool checkIfFileNameExists(string name)
+    {
+        for (int i = 0; i < rootSizemanager.maxSlots; i++)
+        {
+            if (rootSizemanager.slots[i].slotData.fileData != null &&
+               rootSizemanager.slots[i].slotData.fileData.nombre == cmdToExecute.file.nombre)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

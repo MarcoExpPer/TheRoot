@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 
     bool isGameRunning = true;
 
+    public bool lookForSudo = false;
     [SerializeField]
     TextMeshProUGUI textTimer;
 
@@ -40,8 +41,6 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-
         textTimer.text = "00:00";
         textPoints.text = "00 00";
 
@@ -54,7 +53,7 @@ public class GameManager : MonoBehaviour
         if (isGameRunning)
         {
             gameTime += Time.deltaTime;
-            increasePoints(level/2 * Time.deltaTime);
+            increasePoints( (level/4) * Time.deltaTime);
         }
     }
 
@@ -96,6 +95,14 @@ public class GameManager : MonoBehaviour
             isGameRunning = false;
             Debug.Log("Game finished");
             monitorScreenMan.gameOver(points);
+        }
+    }
+
+    public void UpdateLevel(int newLevel)
+    {
+        if(newLevel > 1)
+        {
+            lookForSudo = true;
         }
     }
 }
