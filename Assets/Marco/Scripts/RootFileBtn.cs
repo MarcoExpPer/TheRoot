@@ -36,15 +36,18 @@ public class RootFileBtn : MonoBehaviour
         {
             case ESlotState.BLOCKED:
                 image.sprite = BlockedSprite;
+                closeFileInfo();
                 break;
             case ESlotState.EMPTY:
                 image.sprite = EmptySprite;
+                closeFileInfo();
                 break;
             case ESlotState.FILLED:
                 image.sprite = FilledSprite;
                 break;
             case ESlotState.VIRUS:
                 image.sprite = VirusSprite;
+                closeFileInfo();
                 break;
         }
 
@@ -68,5 +71,10 @@ public class RootFileBtn : MonoBehaviour
             fileInfo.updateData(slotData.fileData, slotData.state);
         }
         
+    }
+
+    private void closeFileInfo()
+    {
+        fileInfo.gameObject.SetActive(false);
     }
 }
