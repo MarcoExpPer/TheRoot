@@ -126,8 +126,9 @@ public class GameManager : MonoBehaviour
         int deathCounter = 0;
         for(int i = 0; i < rootSizeManager.maxSlots; i++)
         {
-            if(rootSizeManager.slots[i].slotData.state == ESlotState.BLOCKED ||
-                rootSizeManager.slots[i].slotData.state == ESlotState.VIRUS)
+            if(rootSizeManager.slots[i].slotData != null && (
+                rootSizeManager.slots[i].slotData.state == ESlotState.BLOCKED ||
+                rootSizeManager.slots[i].slotData.state == ESlotState.VIRUS))
             {
                 deathCounter += 1;
             }

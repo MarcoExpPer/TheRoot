@@ -11,7 +11,10 @@ public class FileData
     public string NameToReplace = "";
     public bool isVirus = false;
 
-    public FileData() { }
+    public FileData() {
+        nombre = "";
+        size = 1;
+    }
 
     public FileData(string name, Color origin, int tamano, bool isVirus = false)
     {
