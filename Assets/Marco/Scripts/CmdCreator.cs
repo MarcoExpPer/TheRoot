@@ -573,11 +573,17 @@ public class CmdCreator : MonoBehaviour
         int commandType = 0;
 
         int emptySlots = 0;
+        int uselessSlots = 0;
         for (int i = 0; i < rootSizeMan.slots.Count; i++)
         {
             if(rootSizeMan.slots[i].slotData.state == ESlotState.EMPTY)
             {
                 emptySlots++;
+            }
+            else if(rootSizeMan.slots[i].slotData.state == ESlotState.BLOCKED 
+                || rootSizeMan.slots[i].slotData.state == ESlotState.VIRUS)
+            {
+                uselessSlots++;
             }
         }
 
@@ -595,12 +601,12 @@ public class CmdCreator : MonoBehaviour
             }
             else
             {
-                commandType = GetAnyCommandTypeByHeuristic(emptySlots);
+                commandType = GetAnyCommandTypeByHeuristic(emptySlots, uselessSlots);
             }
         }
         else
         {
-            commandType = GetAnyCommandTypeByHeuristic(emptySlots);
+            commandType = GetAnyCommandTypeByHeuristic(emptySlots, uselessSlots);
         }
 
 
@@ -642,13 +648,13 @@ public class CmdCreator : MonoBehaviour
         }
     }
 
-    private int GetAnyCommandTypeByHeuristic(int emptySlots)
+    private int GetAnyCommandTypeByHeuristic(int emptySlots, int uselessSlots)
     {
         //Puede ser cualquiera
         //Se selecciona segun la heuristica
         //Si hay muchos huecos vacios es mas probable que aparezcan Adds y Copys
         //Si hay pocos huecos vacios es mas probable que aparezcan Deletes y Replaces
-        float spaceFactor = emptySlots / rootSizeMan.maxSlots;
+        float spaceFactor = emptySlots / rootSizeMan.maxSlots - uselessSlots;
 
         List<int> posibleCommands = new List<int>() { 1, 2, 3, 4 };
         //Primero una fase donde se elimina una posibilidad basado en el factor de espacio
@@ -671,6 +677,7 @@ public class CmdCreator : MonoBehaviour
             posibleCommands.Remove(Random.Range(2, 5));
         }
         //Segunda fase, se elige entre las otras tres opciones con las mismas probabilidades
+
         return posibleCommands[Random.Range(0, posibleCommands.Count)];
     }
 
