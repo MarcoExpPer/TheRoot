@@ -2,12 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
+using TMPro;
 
 public abstract class OurEvents
 {
-    abstract public bool isValid(FileData fileToCheck);
+    abstract public bool isValid(FileData fileToCheck, ECommand command = ECommand.ADD);
 
     abstract public string getDescription();
 
@@ -26,39 +25,63 @@ public class LimitOrigin : OurEvents
 
     public override string getDescription()
     {
+        string colorString = "";
+        foreach (Color item in this.colors)
+        {
+            if(item.Equals(Color.red))
+            {
+                colorString = colorString + "[RED] ";
+            }
+            else if (item.Equals(Color.blue))
+            {
+                colorString = colorString + "[BLUE] ";
+            }
+            else if (item.Equals(Color.green))
+            {
+                colorString = colorString + "[GREEN] ";
+            }      
+            else
+            {
+                colorString = colorString + "[YELLOW] ";
+            }
+
+            //colorString = colorString + "[" + item.ToString() + "] ";
+        }
         if (isWhiteList)
         {
-            return "From now on, we will only accept files form our trusted colored sources";
+            return "From now on, we will ONLY ADD and REPLACE files form our trusted colored sources: "+ colorString;
         }
         else
         {
-            return "From now on, we wont trust some of our colored sources";
+            return "From now on, we WON'T ADD nor REPLACE files from some of our colored sources: "+ colorString;
         }
     }
 
-    override public bool isValid(FileData fileToCheck)
+    override public bool isValid(FileData fileToCheck, ECommand command = ECommand.ADD)
     {
-        if (isWhiteList)
+        if(command == ECommand.ADD || command == ECommand.REPLACE)
         {
-            foreach (Color color in colors)
+            if (isWhiteList)
             {
-                if (fileToCheck.origen != color)
+                foreach (Color color in colors)
                 {
-                    return false;
+                    if (fileToCheck.origen != color)
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                foreach (Color color in colors)
+                {
+                    if (fileToCheck.origen == color)
+                    {
+                        return false;
+                    }
                 }
             }
         }
-        else
-        {
-            foreach (Color color in colors)
-            {
-                if (fileToCheck.origen == color)
-                {
-                    return false;
-                }
-            }
-        }
-
         return true;
     }
 
@@ -76,31 +99,36 @@ public class LimitDate : OurEvents
         this.limitBeforeDate = beforeDate;
     }
 
-    override public bool isValid(FileData fileToCheck)
+    override public bool isValid(FileData fileToCheck, ECommand command = ECommand.ADD)
     {
-        if (limitBeforeDate)
+        if(command == ECommand.ADD || command == ECommand.REPLACE)
         {
-            if (date < fileToCheck.date)
+            if (limitBeforeDate)
             {
-                return false;
+                if (date > fileToCheck.date)
+                {
+                    return false;
+                }
+                else return true;
             }
-            else return true;
-        }
-        else
-        {
-            if (date > fileToCheck.date)
+            else
             {
-                return false;
+                if (date < fileToCheck.date)
+                {
+                    return false;
+                }
+                else return true;
             }
-            else return true;
         }
+        return true;
+        
     }
 
     public override string getDescription()
     {
         if (limitBeforeDate)
         {
-            return "From now on, we wont accept outdated files older than " + date.ToString();
+            return "From now on, we won't accept outdated files older than " + date.ToString();
         }
         else
         {
@@ -119,16 +147,21 @@ public class LimitSize : OurEvents
         this.sizeToLimit = size;
         this.limitSmallers = limitSmall;
     }
-    override public bool isValid(FileData fileToCheck)
+    override public bool isValid(FileData fileToCheck, ECommand command = ECommand.ADD)
     {
-        if (this.limitSmallers)
+        if (command == ECommand.ADD || command == ECommand.REPLACE)
         {
-            return fileToCheck.size < this.sizeToLimit;
+            if (this.limitSmallers)
+            {
+                return fileToCheck.size < this.sizeToLimit;
+            }
+            else
+            {
+                return fileToCheck.size > this.sizeToLimit;
+            }
         }
-        else
-        {
-            return fileToCheck.size > this.sizeToLimit;
-        }
+        return true;
+        
     }
 
     public override string getDescription()
@@ -150,7 +183,15 @@ public class eventManager : MonoBehaviour
     List<Color> colorsToUse = new List<Color>();
     List<OurEvents> eventList = new List<OurEvents>();
 
+    [SerializeField]
+    TextMeshProUGUI _eventNotes;
+
+    [SerializeField]
+    GameObject _eventPanel;
+
     public List<OurEvents> activeEvents = new List<OurEvents>();
+
+    bool[] typesOfEvents = { false, false, false }; //date,color,size
     // Start is called before the first frame update
     void Start()
     {
@@ -159,7 +200,10 @@ public class eventManager : MonoBehaviour
         colorsToUse.Add(Color.green);
         colorsToUse.Add(Color.yellow);
 
+        ShuffleMe();
+
         refreshEvents();
+        _eventPanel.SetActive(false);
     }
 
     public OurEvents addNewEvents()
@@ -168,7 +212,7 @@ public class eventManager : MonoBehaviour
 
         OurEvents ev = eventList[index];
         eventList.RemoveAt(index);
-
+        AddEventNote(ev);
         activeEvents.Add(ev);
         return ev;
     }
@@ -179,7 +223,7 @@ public class eventManager : MonoBehaviour
         activeEvents.Clear();
 
         //Preparar evento de color.
-        int nColors = UnityEngine.Random.Range(0, 2);
+        int nColors = UnityEngine.Random.Range(1, 3);
         List<Color> colorsToFilter = new List<Color>();
 
         for (int i = 0; i < nColors; i++)
@@ -189,7 +233,7 @@ public class eventManager : MonoBehaviour
         }
 
         //0 significa whitelist, 1 significa blacklist
-        eventList.Add(new LimitOrigin(colorsToFilter, UnityEngine.Random.Range(0, 1) == 0));
+        eventList.Add(new LimitOrigin(colorsToFilter, UnityEngine.Random.Range(0, 2) == 0));
 
         //Preparar evento de fecha.
         DateTime dateToFIlter = FileData.GetRandomDate();
@@ -198,5 +242,43 @@ public class eventManager : MonoBehaviour
 
         eventList.Add(new LimitSize(UnityEngine.Random.Range(1, 2), UnityEngine.Random.Range(0, 1) == 0));
 
+    }
+
+
+    public void AddEventNote(OurEvents ourEvent)
+    {
+        if (_eventNotes.text.Length == 0)
+        {
+            _eventNotes.text = "<b>Special Rules:<b>\n\n-> " + ourEvent.getDescription();
+        }
+        else
+        {
+            _eventNotes.text = _eventNotes.text + "\n\n-> " + ourEvent.getDescription();
+        }
+    }
+
+    public void OpenEventNotes()
+    {
+        _eventPanel.SetActive(true);
+    }
+
+    public void CloseEventNotes()
+    {
+        _eventPanel.SetActive(false);
+    }
+
+    public void ShuffleMe()
+    {
+        System.Random random = new System.Random();
+        int n = colorsToUse.Count;
+
+        for (int i = colorsToUse.Count - 1; i > 1; i--)
+        {
+            int rnd = random.Next(i + 1);
+
+            Color value = colorsToUse[rnd];
+            colorsToUse[rnd] = colorsToUse[i];
+            colorsToUse[i] = value;
+        }
     }
 }

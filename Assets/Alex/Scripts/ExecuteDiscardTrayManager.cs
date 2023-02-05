@@ -19,10 +19,20 @@ public class ExecuteDiscardTrayManager : MonoBehaviour
 
     [SerializeField]
     Button _currentFileButton;
+
+    [SerializeField]
+    Button _infoButton;
+
+    public bool newInfo = true;
+
+    [SerializeField]
+    public GameObject newInfoIcon;
+
     void Start()
     {
         _buttonTray.SetActive(false);
         _notificationObject.SetActive(false);
+        newInfoIcon.SetActive(true);
     }
 
     // Update is called once per frame
@@ -49,8 +59,18 @@ public class ExecuteDiscardTrayManager : MonoBehaviour
     {
         _notificationObject.SetActive(true);
         _notificationOpener.interactable = false;
-        _currentFileButton.Select();
-        _currentFileButton.onClick.Invoke();
+        if(newInfo)
+        {
+            _infoButton.Select();
+            _infoButton.onClick.Invoke();
+            newInfo = !newInfo;
+            newInfoIcon.SetActive(false);
+        }
+        else
+        {
+            _currentFileButton.Select();
+            _currentFileButton.onClick.Invoke();
+        }
         //_notificationObject.transform.SetSiblingIndex(0);
     }
 

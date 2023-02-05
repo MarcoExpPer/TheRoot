@@ -75,6 +75,7 @@ public class CmdStackController : MonoBehaviour
         }
         else
         {
+            //Debug.Log(cmd.commandType);
             index = cmdQueue.queueMaxSize - index - 1;
 
             _colorOperations[index].color = _operationColors[(int)cmd.commandType];

@@ -31,6 +31,16 @@ public class FileData
         this.isVirus = isVirus;
     }
 
+    public FileData(FileData data)
+    {
+        nombre = data.nombre;
+        origen = data.origen;
+        size = data.size;
+        this.date = data.date;
+        this.NameToReplace = "";
+        this.isVirus = data.isVirus;
+    }
+
     public static DateTime GetRandomDate()
     {
         DateTime today = DateTime.Today;

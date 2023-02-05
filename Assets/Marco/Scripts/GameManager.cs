@@ -41,6 +41,12 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     public Dictionary<int, float> levelToTimeBetweenCommands = new Dictionary<int, float>();
 
+    [SerializeField]
+    NotificationInstructionController _notifController;
+
+    [SerializeField]
+    ExecuteDiscardTrayManager _traymanager;
+
     public int level = 1;
 
     public GameManager()
@@ -55,7 +61,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        textLevel.text = "1";
+        //textLevel.text = "1";
         textTimer.text = "00:00";
         textPoints.text = "00 00";
 
@@ -121,7 +127,7 @@ public class GameManager : MonoBehaviour
 
     public void UpdateLevel(int newLevel)
     {
-        textLevel.text = newLevel.ToString();
+        //textLevel.text = newLevel.ToString();
         if (newLevel > 1)
         {
             lookForSudo = true;
@@ -146,6 +152,12 @@ public class GameManager : MonoBehaviour
         }
 
         level = newLevel;
+
+        _notifController.WriteInfo(newLevel);
+        if(newLevel == 2 || newLevel == 3) {
+            _traymanager.newInfo = true;
+            _traymanager.newInfoIcon.SetActive(true);
+        }
     }
 
     IEnumerator blackScreenEffect()

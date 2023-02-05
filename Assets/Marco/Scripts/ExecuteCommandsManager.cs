@@ -43,8 +43,12 @@ public class ExecuteCommandsManager : MonoBehaviour
                     {
                         if (checkOp(execute))
                         {
-                            //Todo correcto
-                            correct = true;
+                            //es correcto ejecutar la operacion, ver si se ejecuto
+                            correct = execute;
+                            if (!correct)
+                            {
+                                addBlocked(cmdToExecute.file);
+                            }
                         }
                         else
                         {
@@ -69,7 +73,11 @@ public class ExecuteCommandsManager : MonoBehaviour
                             if (checkOp(execute))
                             {
                                 //Todo correcto
-                                correct = true;
+                                correct = execute;
+                                if (!correct)
+                                {
+                                    addBlocked(cmdToExecute.file);
+                                }
                             }
                             else
                             {
@@ -105,7 +113,11 @@ public class ExecuteCommandsManager : MonoBehaviour
                             if (checkOp(execute))
                             {
                                 //Todo correcto
-                                correct = true;
+                                correct = execute;
+                                if (!correct)
+                                {
+                                    addBlocked(cmdToExecute.file);
+                                }
                             }
                             else
                             {
@@ -136,7 +148,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                                     hasVirus = cmdToExecute.secondaryFile.isVirus;
                                     break;
                             }
-
+                            Debug.Log("Has virus: " + hasVirus);
                             if (hasVirus)
                             {
                                 if (execute)
@@ -154,7 +166,11 @@ public class ExecuteCommandsManager : MonoBehaviour
                                 if (checkOp(execute))
                                 {
                                     //Todo correcto
-                                    correct = true;
+                                    correct = execute;
+                                    if (!correct)
+                                    {
+                                        addBlocked(cmdToExecute.file);
+                                    }
                                 }
                                 else
                                 {
@@ -174,6 +190,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                 }
                 else
                 {
+                    Debug.Log("Failed Event");
                     if (execute)
                     {
                         addVirus(cmdToExecute.file);
@@ -377,10 +394,21 @@ public class ExecuteCommandsManager : MonoBehaviour
     {
         for (int i = 0; i < gameMan.eventMan.activeEvents.Count; i++)
         {
-            if (!gameMan.eventMan.activeEvents[i].isValid(cmdToExecute.file))
+            if(cmdToExecute.commandType == ECommand.REPLACE)
             {
-                return false;
+                if (!gameMan.eventMan.activeEvents[i].isValid(cmdToExecute.secondaryFile, cmdToExecute.commandType))
+                {
+                    return false;
+                }
             }
+            else
+            {
+                if (!gameMan.eventMan.activeEvents[i].isValid(cmdToExecute.file, cmdToExecute.commandType))
+                {
+                    return false;
+                }
+            }
+            
         }
 
         return true;
@@ -692,7 +720,14 @@ public class ExecuteCommandsManager : MonoBehaviour
     public void updateCommand(Command cmd)
     {
         cmdToExecute = cmd;
-        fileInMiddleOfTheScreen.UpdateFileData(cmd.file);
+        if(cmd.commandType == ECommand.REPLACE)
+        {
+            fileInMiddleOfTheScreen.UpdateFileData(cmd.secondaryFile);
+        }
+        else
+        {
+            fileInMiddleOfTheScreen.UpdateFileData(cmd.file);
+        }
         activeBtn.updateCommand(cmd);
     }
 

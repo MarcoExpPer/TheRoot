@@ -48,8 +48,14 @@ public class currentActiveCommandBtn : MonoBehaviour
         command = cmd;
         _fileButton.image.sprite = _fileSpritesToUse[0];
 
-        _antiVoker._file = cmd.file;
-
+        if(cmd.commandType == ECommand.REPLACE)
+        {
+            _antiVoker._file = cmd.secondaryFile;
+        }
+        else
+        {
+            _antiVoker._file = cmd.file;
+        }
         _commandImage.sprite = _commandSpritesToUse[(int)(cmd.commandType)];
         _commandImage.SetNativeSize();
 
