@@ -81,6 +81,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                             }
                             else
                             {
+                                Debug.Log("Failed OP CHECK");
                                 if (execute)
                                 {
                                     addVirus(cmdToExecute.file);
@@ -94,6 +95,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                         }
                         else
                         {
+                            Debug.Log("Command Not Sudo");
                             if (execute)
                             {
                                 addVirus(cmdToExecute.file);
@@ -134,6 +136,7 @@ public class ExecuteCommandsManager : MonoBehaviour
                         }
                         else
                         {
+                            Debug.Log("Command Not SUDO");
                             bool hasVirus = false;
                             switch (cmdToExecute.commandType)
                             {
@@ -204,6 +207,7 @@ public class ExecuteCommandsManager : MonoBehaviour
             }
             else
             {
+                Debug.Log("Fallo de validacion de op y nombre");
                 if (execute)
                 {
                     addVirus(cmdToExecute.file);
@@ -217,6 +221,7 @@ public class ExecuteCommandsManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("Check de tamano failed");
             if (execute)
             {
                 addBlocked(cmdToExecute.file);
