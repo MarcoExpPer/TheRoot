@@ -61,6 +61,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject _eventNotify;
 
+    [SerializeField]
+    CmdStackController _stackController;
+
+    private FMOD.Studio.EventInstance instace;
+
 
     public int level = 1;
 
@@ -146,6 +151,12 @@ public class GameManager : MonoBehaviour
         }
         if(deathCounter == rootSizeManager.maxSlots && !blueScreenEffectDone)
         {
+            ///sonido victoria XDDDDDDDDDDDDDDDDDDDDDDDDD
+            _stackController.instace.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            _stackController.instace2.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            _stackController.instace3.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            instace = FMODUnity.RuntimeManager.CreateInstance("event:/Defeat");
+            instace.start();
             isGameRunning = false;
             blueScreenEffectDone = true;
             Debug.Log("Game finished");

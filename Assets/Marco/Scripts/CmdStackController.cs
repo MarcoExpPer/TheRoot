@@ -27,11 +27,11 @@ public class CmdStackController : MonoBehaviour
     [SerializeField]
     Sprite[] _stackStatusImageFiles;
 
-    private FMOD.Studio.EventInstance instace;
+    public FMOD.Studio.EventInstance instace;
 
-    private FMOD.Studio.EventInstance instace2;
+    public FMOD.Studio.EventInstance instace2;
 
-    private FMOD.Studio.EventInstance instace3;
+    public FMOD.Studio.EventInstance instace3;
     RectTransform rt;
 
     int fontSize = 5;
