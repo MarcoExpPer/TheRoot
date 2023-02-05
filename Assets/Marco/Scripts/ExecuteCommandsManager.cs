@@ -21,7 +21,14 @@ public class ExecuteCommandsManager : MonoBehaviour
     [SerializeField]
     activateDisactivate fileInMiddleOfTheScreen;
 
+    [SerializeField]
+    CloseNotify failNotify;
+
     AudioSource audioSource;
+
+
+    string errorText = "";
+
     public void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -29,6 +36,7 @@ public class ExecuteCommandsManager : MonoBehaviour
 
     public void confirmCommand(bool execute)
     {
+        errorText = "";
         Debug.Log("Execute Command: " + execute + " " + cmdToExecute.commandType + " " + cmdToExecute.isSudo);
         bool correct = false;
 
@@ -47,6 +55,8 @@ public class ExecuteCommandsManager : MonoBehaviour
                             correct = execute;
                             if (!correct)
                             {
+                                errorText = "Correct operation discarded. \n" +
+"some of THE ROOT slots has been blocked";
                                 addBlocked(cmdToExecute.file);
                             }
                         }
@@ -54,6 +64,8 @@ public class ExecuteCommandsManager : MonoBehaviour
                         {
                             if (execute)
                             {
+                                errorText = "Wrong operation executed. \n" +
+"some of THE ROOT slots has been infected";
                                 addVirus(cmdToExecute.file);
                             }
                             else
@@ -76,6 +88,8 @@ public class ExecuteCommandsManager : MonoBehaviour
                                 correct = execute;
                                 if (!correct)
                                 {
+                                    errorText = "Correct operation discarded. \n" +
+"some of THE ROOT slots has been blocked";
                                     addBlocked(cmdToExecute.file);
                                 }
                             }
@@ -84,6 +98,8 @@ public class ExecuteCommandsManager : MonoBehaviour
                                 Debug.Log("Failed OP CHECK");
                                 if (execute)
                                 {
+                                    errorText = "Wrong operation executed. \n" +
+"some of THE ROOT slots has been infected";
                                     addVirus(cmdToExecute.file);
                                 }
                                 else
@@ -98,6 +114,8 @@ public class ExecuteCommandsManager : MonoBehaviour
                             Debug.Log("Command Not Sudo");
                             if (execute)
                             {
+                                errorText = "Files without special privileges are not accepted. \n" +
+"some of THE ROOT slots has been infected";
                                 addVirus(cmdToExecute.file);
                             }
                             else
@@ -118,6 +136,8 @@ public class ExecuteCommandsManager : MonoBehaviour
                                 correct = execute;
                                 if (!correct)
                                 {
+                                    errorText = "Correct operation discarded. \n" +
+"some of THE ROOT slots has been blocked";
                                     addBlocked(cmdToExecute.file);
                                 }
                             }
@@ -125,6 +145,8 @@ public class ExecuteCommandsManager : MonoBehaviour
                             {
                                 if (execute)
                                 {
+                                    errorText = "Wrong operation executed.\n" +
+"some of THE ROOT slots has been infected";
                                     addVirus(cmdToExecute.file);
                                 }
                                 else
@@ -156,6 +178,8 @@ public class ExecuteCommandsManager : MonoBehaviour
                             {
                                 if (execute)
                                 {
+                                    errorText = "Added a file with a virus. \n" +
+"some of THE ROOT slots has been infected";
                                     addVirus(cmdToExecute.file);
                                 }
                                 else
@@ -172,6 +196,8 @@ public class ExecuteCommandsManager : MonoBehaviour
                                     correct = execute;
                                     if (!correct)
                                     {
+                                        errorText = "Correct operation discarded. \n" +
+"some of THE ROOT slots has been blocked";
                                         addBlocked(cmdToExecute.file);
                                     }
                                 }
@@ -179,6 +205,8 @@ public class ExecuteCommandsManager : MonoBehaviour
                                 {
                                     if (execute)
                                     {
+                                        errorText = "Wrong operation executed.\n" +
+"some of THE ROOT slots has been infected";
                                         addVirus(cmdToExecute.file);
                                     }
                                     else
@@ -196,6 +224,8 @@ public class ExecuteCommandsManager : MonoBehaviour
                     Debug.Log("Failed Event");
                     if (execute)
                     {
+                        errorText = "Dangerous file has been added to The Root. \n" +
+    "File doesnt match one of the special requirements in the bottom-left notebook";
                         addVirus(cmdToExecute.file);
                     }
                     else
@@ -210,6 +240,8 @@ public class ExecuteCommandsManager : MonoBehaviour
                 Debug.Log("Fallo de validacion de op y nombre");
                 if (execute)
                 {
+                    errorText = "Dangerous file has been added to The Root. \n" +
+                        "Name or operation is unmatched with our company data";
                     addVirus(cmdToExecute.file);
                 }
                 else
@@ -224,6 +256,7 @@ public class ExecuteCommandsManager : MonoBehaviour
             Debug.Log("Check de tamano failed");
             if (execute)
             {
+                errorText = "Root size excedeed. A slot got blocked";
                 addBlocked(cmdToExecute.file);
             }
             else
@@ -259,6 +292,11 @@ public class ExecuteCommandsManager : MonoBehaviour
             }
 
             gameMan.increasePoints(gameMan.level * 15);
+        }
+        else
+        {
+            failNotify.updateText(errorText);
+            failNotify.open();
         }
 
         updateCommand(cmdCreator.getNextCommand());
@@ -740,7 +778,8 @@ public class ExecuteCommandsManager : MonoBehaviour
     {
         for (int i = 0; i < rootSizemanager.maxSlots; i++)
         {
-            if (rootSizemanager.slots[i].slotData.fileData != null &&
+            if (rootSizemanager.slots[i].slotData != null &&
+                rootSizemanager.slots[i].slotData.fileData != null &&
                rootSizemanager.slots[i].slotData.fileData.nombre == cmdToExecute.file.nombre)
             {
                 return true;

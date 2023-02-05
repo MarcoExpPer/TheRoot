@@ -17,7 +17,7 @@ public class SlotData
 
     public SlotData() {
         state = ESlotState.EMPTY;
-        fileData = null;
+        fileData = new FileData();
     }
     public SlotData(FileData filed, ESlotState st)
     {
@@ -87,7 +87,7 @@ public class RootSizeManager : MonoBehaviour
         {
             for (int i = 0; i < maxSlots && sizeToAdd > 0; i++)
             {
-                if (slots[i].slotData.state == ESlotState.EMPTY)
+                if (slots[i].slotData == null || slots[i].slotData.state == ESlotState.EMPTY)
                 {
                     slots[i].changeSlotData(new SlotData(fileToAdd, slotstate));
                     sizeToAdd -= 1;

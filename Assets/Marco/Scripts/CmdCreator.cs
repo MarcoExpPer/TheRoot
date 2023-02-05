@@ -576,7 +576,7 @@ public class CmdCreator : MonoBehaviour
         int uselessSlots = 0;
         for (int i = 0; i < rootSizeMan.slots.Count; i++)
         {
-            if(rootSizeMan.slots[i].slotData.state == ESlotState.EMPTY)
+            if(rootSizeMan.slots[i].slotData == null || rootSizeMan.slots[i].slotData.state == ESlotState.EMPTY)
             {
                 emptySlots++;
             }
