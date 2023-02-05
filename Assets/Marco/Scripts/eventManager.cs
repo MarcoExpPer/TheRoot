@@ -128,11 +128,11 @@ public class LimitDate : OurEvents
     {
         if (limitBeforeDate)
         {
-            return "From now on, we won't accept outdated files older than " + date.ToString();
+            return "From now on, we won't accept outdated files older than " + date.ToString() + " for ADD or REPLACE operations";
         }
         else
         {
-            return "We have found some weird files from the future, dont accept any from after " + date.ToString();
+            return "We have found some weird files from the future, only accept files from after " + date.ToString() + " for ADD or REPLACE operations";
         }
     }
 }
@@ -153,11 +153,11 @@ public class LimitSize : OurEvents
         {
             if (this.limitSmallers)
             {
-                return fileToCheck.size < this.sizeToLimit;
+                return fileToCheck.size >= this.sizeToLimit;
             }
             else
             {
-                return fileToCheck.size > this.sizeToLimit;
+                return fileToCheck.size <= this.sizeToLimit;
             }
         }
         return true;
@@ -168,11 +168,11 @@ public class LimitSize : OurEvents
     {
         if (this.limitSmallers)
         {
-            return "For some reason, small files are hurting our Root. Dont allow files lower than " + this.sizeToLimit + "into the root";
+            return "For some reason, small files are hurting our Root. Don't ADD or REPLACE files lower than " + this.sizeToLimit + "into the root";
         }
         else
         {
-            return "Our root is suffering, dont upload files higher than " + this.sizeToLimit;
+            return "Our root is suffering, dont ADD or REPLACE files higher than " + this.sizeToLimit;
         }
     }
 }
