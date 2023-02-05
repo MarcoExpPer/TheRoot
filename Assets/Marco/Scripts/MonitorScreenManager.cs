@@ -29,7 +29,7 @@ public class MonitorScreenManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        maxRightLength = (float) (gameCanvas.rect.width * 1.5);
+        maxRightLength = (float) (gameCanvas.rect.width * 1);
 
         Vector2 position = rootCanvas.anchoredPosition;
         position.x += maxRightLength;
