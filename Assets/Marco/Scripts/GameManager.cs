@@ -55,6 +55,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     ExecuteDiscardTrayManager _traymanager;
 
+    [SerializeField]
+    CmdQueue _cmdQueue;
+
     public int level = 1;
 
     public GameManager()
@@ -72,6 +75,8 @@ public class GameManager : MonoBehaviour
         //textLevel.text = "1";
         textTimer.text = "00:00";
         textPoints.text = "00 00";
+
+        _cmdQueue.OnQueueFilled += queueFilled;
 
         rootSizeManager.OnRootChanged += hasGameEnded;
     }
@@ -97,6 +102,15 @@ public class GameManager : MonoBehaviour
         string secs = seconds.ToString("00");
        
         textTimer.text = min + ":" + secs;
+    }
+
+    private void queueFilled() 
+    {
+        isGameRunning = false;
+        blueScreenEffectDone = true;
+        Debug.Log("Game finished");
+        StartCoroutine(blueScreenEffect());
+        monitorScreenMan.gameOver(points);
     }
 
     public void increasePoints(float newPoints)
