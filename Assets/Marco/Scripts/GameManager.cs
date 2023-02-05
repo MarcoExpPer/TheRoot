@@ -58,6 +58,10 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     CmdQueue _cmdQueue;
 
+    [SerializeField]
+    GameObject _eventNotify;
+
+
     public int level = 1;
 
     public GameManager()
@@ -166,14 +170,17 @@ public class GameManager : MonoBehaviour
         if(newLevel == 2)
         {
             eventMan.addNewEvents();
+            _eventNotify.SetActive(true);
         }
         if (newLevel == 3)
         {
             eventMan.addNewEvents();
+            _eventNotify.SetActive(true);
         }
         if (newLevel == 4)
         {
             eventMan.addNewEvents();
+            _eventNotify.SetActive(true);
         }
 
         level = newLevel;

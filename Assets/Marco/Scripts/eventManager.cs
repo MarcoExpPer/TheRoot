@@ -208,7 +208,7 @@ public class eventManager : MonoBehaviour
 
     public OurEvents addNewEvents()
     {
-        int index = UnityEngine.Random.Range(0, eventList.Count - 1);
+        int index = UnityEngine.Random.Range(0, eventList.Count);
 
         OurEvents ev = eventList[index];
         eventList.RemoveAt(index);
@@ -237,10 +237,10 @@ public class eventManager : MonoBehaviour
 
         //Preparar evento de fecha.
         DateTime dateToFIlter = FileData.GetRandomDate();
-        eventList.Add(new LimitDate(dateToFIlter, UnityEngine.Random.Range(0, 1) == 0));
+        eventList.Add(new LimitDate(dateToFIlter, UnityEngine.Random.Range(0, 2) == 0));
 
 
-        eventList.Add(new LimitSize(UnityEngine.Random.Range(1, 2), UnityEngine.Random.Range(0, 1) == 0));
+        eventList.Add(new LimitSize(UnityEngine.Random.Range(1, 3), UnityEngine.Random.Range(0, 2) == 0));
 
     }
 
