@@ -149,7 +149,7 @@ public class CmdCreator : MonoBehaviour
                 new FileData("System32", GenerateColor(), 1), false);
             default:
                 gameManager.UpdateLevel(2);
-                numCommandToNextLevel = Random.Range(2, 3);
+                numCommandToNextLevel = Random.Range(5, 11);
                 commandCount = 0;
                 return new Command(ECommand.REPLACE, new cmdNotification("User", "User-32", ECommand.REPLACE),
                new FileData("User", GenerateColor(), 1, "User-32"),
