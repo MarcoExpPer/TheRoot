@@ -572,26 +572,35 @@ public class CmdCreator : MonoBehaviour
     {
         int commandType = 0;
 
+        int emptySlots = 0;
+        for (int i = 0; i < rootSizeMan.slots.Count; i++)
+        {
+            if(rootSizeMan.slots[i].slotData.state == ESlotState.EMPTY)
+            {
+                emptySlots++;
+            }
+        }
+
         if (alreadyOneBadInstruction)
         {
             //No se puede hacer ni Delete, Replace ni Copy
-            if (rootSizeMan.emptySlots == rootSizeMan.maxSlots)
+            if (emptySlots == rootSizeMan.maxSlots)
             {
                 commandType = 1;
             }
             //No puede ser ni Add ni Copy
-            else if (rootSizeMan.emptySlots == 0)
+            else if (emptySlots == 0)
             {
                 commandType = Random.Range(2, 3);
             }
             else
             {
-                commandType = GetAnyCommandTypeByHeuristic();
+                commandType = GetAnyCommandTypeByHeuristic(emptySlots);
             }
         }
         else
         {
-            commandType = GetAnyCommandTypeByHeuristic();
+            commandType = GetAnyCommandTypeByHeuristic(emptySlots);
         }
 
 
@@ -633,22 +642,22 @@ public class CmdCreator : MonoBehaviour
         }
     }
 
-    private int GetAnyCommandTypeByHeuristic()
+    private int GetAnyCommandTypeByHeuristic(int emptySlots)
     {
         //Puede ser cualquiera
         //Se selecciona segun la heuristica
         //Si hay muchos huecos vacios es mas probable que aparezcan Adds y Copys
         //Si hay pocos huecos vacios es mas probable que aparezcan Deletes y Replaces
-        float spaceFactor = rootSizeMan.emptySlots / rootSizeMan.maxSlots;
+        float spaceFactor = emptySlots / rootSizeMan.maxSlots;
 
         List<int> posibleCommands = new List<int>() { 1, 2, 3, 4 };
         //Primero una fase donde se elimina una posibilidad basado en el factor de espacio
         //Si es muy alto, se eliminará una opcion de Delete o Replace o Copy
         //Y si es muy bajo se eliminará una opcion de Add o Copy
         //Si es un valor intermedio no se quitará ninguna opcion
-        if (spaceFactor <= 0.35f)
+        if (spaceFactor <= 0.30f)
         {
-            if (Random.Range(1, 2) == 1)
+            if (Random.Range(1, 3) == 1)
             {
                 posibleCommands.Remove(1);  //Quitamos Add
             }
@@ -657,9 +666,9 @@ public class CmdCreator : MonoBehaviour
                 posibleCommands.Remove(4);  //Quitamos Copy
             }
         }
-        else if (spaceFactor >= 0.65f)
+        else if (spaceFactor >= 0.70f)
         {
-            posibleCommands.Remove(Random.Range(2, 4));
+            posibleCommands.Remove(Random.Range(2, 5));
         }
         //Segunda fase, se elige entre las otras tres opciones con las mismas probabilidades
         return posibleCommands[Random.Range(0, posibleCommands.Count)];
@@ -668,7 +677,7 @@ public class CmdCreator : MonoBehaviour
     private bool decideSudo()
     {
         //20% de no ser sudo
-        if(Random.Range(1, 5) == 1)
+        if(Random.Range(1, 6) == 1)
         {
             return false;
         }
@@ -681,7 +690,7 @@ public class CmdCreator : MonoBehaviour
     private bool decideSudoLevel3()
     {
         //33.33% de no ser sudo
-        if (Random.Range(1, 3) == 1)
+        if (Random.Range(1, 4) == 1)
         {
             return false;
         }
@@ -707,7 +716,7 @@ public class CmdCreator : MonoBehaviour
     private bool decideCorrectness()
     {
         //10% de que no coincidan
-        if (Random.Range(1, 10) == 2)
+        if (Random.Range(1, 11) == 2)
         {
             return false;
         }
@@ -722,10 +731,10 @@ public class CmdCreator : MonoBehaviour
     {
         string name = "";
         //20% de tener "_" entre cada palabra
-        bool hasGuionBajo = (Random.Range(1, 5) == 1);
+        bool hasGuionBajo = (Random.Range(1, 6) == 1);
 
         //33% de tener un adjetivo al principio
-        if (Random.Range(1, 3) == 1)
+        if (Random.Range(1, 4) == 1)
         {
             name += adjs[Random.Range(0, adjs.Length)];
             if (hasGuionBajo)
@@ -736,7 +745,7 @@ public class CmdCreator : MonoBehaviour
         //Añadimos un sustantivo
         name += sust[Random.Range(0, sust.Length)];
         //50% de añadir otro adjetivo
-        if (Random.Range(1, 2) == 1)
+        if (Random.Range(1, 3) == 1)
         {
             if (hasGuionBajo)
             {

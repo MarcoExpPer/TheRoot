@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DragDrop2 : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class DragDrop3 : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     [HideInInspector] public RectTransform rt;
     private Vector2 middlePoint = new Vector2(0f, 0f);
@@ -23,8 +23,8 @@ public class DragDrop2 : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, 
 
     public void OnDrag(PointerEventData EventData)
     {
-        if (rt.anchoredPosition.x > -550f + rt.sizeDelta.x / 2 && rt.anchoredPosition.x < 550f - rt.sizeDelta.x / 2 &&
-            rt.anchoredPosition.y > -380f + rt.sizeDelta.y / 2 && rt.anchoredPosition.y < 240f - rt.sizeDelta.y / 2)
+        if (rt.anchoredPosition.x > -540f + rt.sizeDelta.x / 2 && rt.anchoredPosition.x < 550f - rt.sizeDelta.x / 2 &&
+            rt.anchoredPosition.y > -290f + rt.sizeDelta.y / 2 && rt.anchoredPosition.y < 330f - rt.sizeDelta.y / 2)
         {
             rt.anchoredPosition += EventData.delta;
             transform.SetAsLastSibling();
