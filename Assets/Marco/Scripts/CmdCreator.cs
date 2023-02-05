@@ -11,7 +11,6 @@ public class CmdCreator : MonoBehaviour
     [SerializeField]
     bool isTimerActive = true;
 
-    private float spaceFactor = 1;
     [SerializeField] private float probabilityConst = 1;
 
     private string[] sust = new string[21] { "File", "Text", "Mail", "Engine", "Unreal", "Game", "Troyan", 

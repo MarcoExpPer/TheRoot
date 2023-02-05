@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
@@ -11,6 +12,7 @@ public class GameManager : MonoBehaviour
     float gameTime = 0;
 
     bool blackScreenEffectDone = false;
+    bool blueScreenEffectDone = false;
 
     bool isGameRunning = true;
 
@@ -37,6 +39,12 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     Image blackPanel;
+
+    [SerializeField]
+    GameObject blueScreen1;
+
+    [SerializeField] 
+    GameObject blueScreen2;
 
     [SerializeField]
     public Dictionary<int, float> levelToTimeBetweenCommands = new Dictionary<int, float>();
@@ -117,10 +125,12 @@ public class GameManager : MonoBehaviour
             Debug.Log("Black effect");
             StartCoroutine(blackScreenEffect());
         }
-        if(deathCounter == rootSizeManager.maxSlots)
+        if(deathCounter == rootSizeManager.maxSlots && !blueScreenEffectDone)
         {
             isGameRunning = false;
+            blueScreenEffectDone = true;
             Debug.Log("Game finished");
+            StartCoroutine(blueScreenEffect());
             monitorScreenMan.gameOver(points);
         }
     }
@@ -175,5 +185,14 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         blackPanel.gameObject.SetActive(false);
         yield return null;
+    }
+
+    IEnumerator blueScreenEffect()
+    {
+        blueScreen1.SetActive(true);
+        blueScreen2.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        blueScreen1.SetActive(false);
+        blueScreen2.SetActive(false);
     }
 }
