@@ -58,6 +58,10 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     CmdQueue _cmdQueue;
 
+    [SerializeField]
+    GameObject _eventNotify;
+
+
     public int level = 1;
 
     public GameManager()
@@ -126,8 +130,9 @@ public class GameManager : MonoBehaviour
         int deathCounter = 0;
         for(int i = 0; i < rootSizeManager.maxSlots; i++)
         {
-            if(rootSizeManager.slots[i].slotData.state == ESlotState.BLOCKED ||
-                rootSizeManager.slots[i].slotData.state == ESlotState.VIRUS)
+            if(rootSizeManager.slots[i].slotData != null && (
+                rootSizeManager.slots[i].slotData.state == ESlotState.BLOCKED ||
+                rootSizeManager.slots[i].slotData.state == ESlotState.VIRUS))
             {
                 deathCounter += 1;
             }
@@ -165,14 +170,17 @@ public class GameManager : MonoBehaviour
         if(newLevel == 2)
         {
             eventMan.addNewEvents();
+            _eventNotify.SetActive(true);
         }
         if (newLevel == 3)
         {
             eventMan.addNewEvents();
+            _eventNotify.SetActive(true);
         }
         if (newLevel == 4)
         {
             eventMan.addNewEvents();
+            _eventNotify.SetActive(true);
         }
 
         level = newLevel;
