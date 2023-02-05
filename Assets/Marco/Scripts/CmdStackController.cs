@@ -27,10 +27,17 @@ public class CmdStackController : MonoBehaviour
     [SerializeField]
     Sprite[] _stackStatusImageFiles;
 
+    private FMOD.Studio.EventInstance instace;
+
+    private FMOD.Studio.EventInstance instace2;
+
+    private FMOD.Studio.EventInstance instace3;
     RectTransform rt;
 
     int fontSize = 5;
     List<TextMeshPro> texts;
+
+    int _playedMusic = 0; //0 initial, 1 music speeder, 2 musicspeeder 2
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +45,12 @@ public class CmdStackController : MonoBehaviour
         {
             img.gameObject.SetActive(false);
         }
+
+        _stackStatusImage.sprite = _stackStatusImageFiles[0];
+        instace = FMODUnity.RuntimeManager.CreateInstance("event:/Maintheme");
+        instace2 = FMODUnity.RuntimeManager.CreateInstance("event:/Maintheme1_2");
+        instace3 = FMODUnity.RuntimeManager.CreateInstance("event:/Mainthemev1_4");
+        instace.start();
 
         cmdQueue.OnQueueChanged += onQueueChanged;
         _stackStatusImage.sprite = _stackStatusImageFiles[0];
@@ -86,14 +99,35 @@ public class CmdStackController : MonoBehaviour
         }
         if(cmdQueue.currentQueueSize<=1)
         {
+            if (_playedMusic != 0)
+            {
+                instace2.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                instace3.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                instace.start();
+                _playedMusic = 0;
+            }
             _stackStatusImage.sprite = _stackStatusImageFiles[0];
         }
         else if (cmdQueue.currentQueueSize <= 3)
         {
+            if(_playedMusic != 1)
+            {
+                instace.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                instace3.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                instace2.start();
+                _playedMusic = 1;
+            }
             _stackStatusImage.sprite = _stackStatusImageFiles[1];
         }
         else
         {
+            if (_playedMusic != 2)
+            {
+                instace.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                instace2.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                instace3.start();
+                _playedMusic = 2;
+            }
             _stackStatusImage.sprite = _stackStatusImageFiles[2];
         }
     }
