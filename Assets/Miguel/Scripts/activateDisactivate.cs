@@ -16,7 +16,7 @@ public class activateDisactivate : MonoBehaviour
     {
         goToToggle.SetActive(!goToToggle.activeSelf);
         ButtonToggleFileData a = goToToggle.GetComponent<ButtonToggleFileData>();
-        a.transform.position = new Vector3(0, 0, 0);
+        a.transform.position = new Vector3(2, 0, 0);
         a.updateData(fileData);
 
     }
@@ -27,7 +27,7 @@ public class activateDisactivate : MonoBehaviour
         {
             goToToggle.SetActive(true);
             ButtonToggleFileData a = goToToggle.GetComponent<ButtonToggleFileData>();
-            a.transform.position = new Vector3(0, 0, 0);
+            a.transform.position = new Vector3(2, 0, 0);
             a.updateData(fileData);
         }
     }

@@ -64,6 +64,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     CmdStackController _stackController;
 
+    [SerializeField]
+    GameObject fileNotify;
+
     private FMOD.Studio.EventInstance instace;
 
 
@@ -181,16 +184,19 @@ public class GameManager : MonoBehaviour
         if(newLevel == 2)
         {
             eventMan.addNewEvents();
+            fileNotify.SetActive(true);
             _eventNotify.SetActive(true);
         }
         if (newLevel == 3)
         {
             eventMan.addNewEvents();
+            fileNotify.SetActive(true);
             _eventNotify.SetActive(true);
         }
         if (newLevel == 4)
         {
             eventMan.addNewEvents();
+            fileNotify.SetActive(true);
             _eventNotify.SetActive(true);
         }
 
