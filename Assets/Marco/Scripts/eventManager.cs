@@ -247,6 +247,7 @@ public class eventManager : MonoBehaviour
 
     public void AddEventNote(OurEvents ourEvent)
     {
+        Debug.Log("Adding event");
         if (_eventNotes.text.Length == 0)
         {
             _eventNotes.text = "<b>Special Rules:<b>\n\n-> " + ourEvent.getDescription();
