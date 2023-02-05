@@ -43,6 +43,14 @@ public class MenuManager : MonoBehaviour
             {
                 ReturnToMainMenu();
             }
+            if (SceneManager.GetActiveScene().buildIndex == 1)
+            {
+                GameManager gm = GameObject.Find("gameManager").GetComponent<GameManager>();
+                if (!gm.isGameRunning)
+                {
+                    ReturnToMainMenu();
+                }
+            }
         }
     }
 }

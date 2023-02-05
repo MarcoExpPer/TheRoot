@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     bool blackScreenEffectDone = false;
     bool blueScreenEffectDone = false;
 
-    bool isGameRunning = true;
+    public bool isGameRunning = true;
 
     public bool lookForSudo = false;
     public bool virusCanHappen = false;
