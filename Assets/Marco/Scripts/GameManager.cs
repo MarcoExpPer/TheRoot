@@ -75,9 +75,9 @@ public class GameManager : MonoBehaviour
 
     public GameManager()
     {
-        levelToTimeBetweenCommands.Add(1, 10);
-        levelToTimeBetweenCommands.Add(2, 10);
-        levelToTimeBetweenCommands.Add(3, 10);
+        levelToTimeBetweenCommands.Add(1, 30);
+        levelToTimeBetweenCommands.Add(2, 25);
+        levelToTimeBetweenCommands.Add(3, 20);
         levelToTimeBetweenCommands.Add(4, 10);
     }
 
