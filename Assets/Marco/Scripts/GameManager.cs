@@ -67,7 +67,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject fileNotify;
 
-    private FMOD.Studio.EventInstance instace;
+    [SerializeField]
+    public FMOD.Studio.EventInstance instace;
 
 
     public int level = 1;
@@ -84,6 +85,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        instace = FMODUnity.RuntimeManager.CreateInstance("event:/ChangeLevel");
+
         //textLevel.text = "1";
         textTimer.text = "00:00";
         textPoints.text = "00 00";
@@ -170,7 +173,8 @@ public class GameManager : MonoBehaviour
 
     public void UpdateLevel(int newLevel)
     {
-        //textLevel.text = newLevel.ToString();
+        instace.start();
+
         if (newLevel > 1)
         {
             lookForSudo = true;
