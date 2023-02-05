@@ -189,6 +189,9 @@ public class eventManager : MonoBehaviour
     [SerializeField]
     GameObject _eventPanel;
 
+    [SerializeField]
+    ExecuteDiscardTrayManager _traceMan;
+
     public List<OurEvents> activeEvents = new List<OurEvents>();
 
     bool[] typesOfEvents = { false, false, false }; //date,color,size
@@ -259,7 +262,16 @@ public class eventManager : MonoBehaviour
 
     public void OpenEventNotes()
     {
-        _eventPanel.SetActive(true);
+        if (!_eventPanel.activeSelf)
+        {
+            _eventPanel.SetActive(true);
+        }
+        else
+        {
+            Debug.Log("???????");
+            _traceMan.CloseNotif();
+        }
+         
     }
 
     public void CloseEventNotes()

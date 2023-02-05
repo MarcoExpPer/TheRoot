@@ -58,7 +58,7 @@ public class ExecuteDiscardTrayManager : MonoBehaviour
     public void OpenNotif()
     {
         _notificationObject.SetActive(true);
-        _notificationOpener.interactable = false;
+        //_notificationOpener.interactable = false;
         if(newInfo)
         {
             _infoButton.Select();
@@ -77,7 +77,7 @@ public class ExecuteDiscardTrayManager : MonoBehaviour
     public void CloseNotif()
     {
         _notificationObject.SetActive(false);
-        _notificationOpener.interactable = true;
+        //_notificationOpener.interactable = true;
         //_notificationObject.transform.SetSiblingIndex(1);
     }
 }
