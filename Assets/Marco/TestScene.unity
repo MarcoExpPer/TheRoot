@@ -11856,11 +11856,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -705230249
-      Data2: 1329873050
-      Data3: -940478067
-      Data4: -1476857769
-    Path: event:/Mainthemev1_4
+      Data1: -669742443
+      Data2: 1247613404
+      Data3: -2113794907
+      Data4: -1105009167
+    Path: event:/Defeat
   Event: 
   PlayEvent: 1
   StopEvent: 2
@@ -13162,6 +13162,7 @@ MonoBehaviour:
   _traymanager: {fileID: 1639977448}
   _cmdQueue: {fileID: 1302448389}
   _eventNotify: {fileID: 97440444}
+  _stackController: {fileID: 1578961450}
   level: 1
 --- !u!1 &1818129704
 GameObject:

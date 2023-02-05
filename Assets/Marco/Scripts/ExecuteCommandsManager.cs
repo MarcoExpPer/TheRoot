@@ -26,6 +26,8 @@ public class ExecuteCommandsManager : MonoBehaviour
 
     AudioSource audioSource;
 
+    private FMOD.Studio.EventInstance instace;
+
 
     string errorText = "";
 
@@ -295,6 +297,9 @@ public class ExecuteCommandsManager : MonoBehaviour
         }
         else
         {
+            ///sonidos//
+            instace = FMODUnity.RuntimeManager.CreateInstance("event:/Fallo");
+            instace.start();
             failNotify.updateText(errorText);
             failNotify.open();
         }
