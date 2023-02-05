@@ -76,11 +76,13 @@ public class NotificationInstructionController : MonoBehaviour
     public void SwitchToFileText()
     {
         _texto.text = currentFileText;
+        _texto.fontSize = 20;
     }
 
     public void SwitchToInfoText()
     {
         _texto.text = currentInfoText;
+        _texto.fontSize = 15;
     }
 
 }
