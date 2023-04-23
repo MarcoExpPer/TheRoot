@@ -1,3 +1,3 @@
 # TheRoot
 
-Si tienen grupo de Discord o algo, agregarme. Mi Discord es AlexXW#8226
+Global Game Jam link: https://globalgamejam.org/2023/games/root-3-0
